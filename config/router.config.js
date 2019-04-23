@@ -28,8 +28,8 @@ export default [
       {
         path: 'basic',
         routes: [
-          { path: '/basic/dictionary', component: './DictionariesManagement/DictionariesList' },
-          { path: '/basic/park', component: './ParkManagement/ParkList' },
+          { path: '/basic/dictionary', component: './Dictionary/DictionaryList' },
+          { path: '/basic/park', component: './Park/ParkList' },
         ],
       },
     ],

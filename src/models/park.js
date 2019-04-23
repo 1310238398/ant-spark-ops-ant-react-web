@@ -15,7 +15,6 @@ export default {
     formID: '',
     formVisible: false,
     formData: {},
-    selectData: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -146,16 +145,6 @@ export default {
         yield put({ type: 'fetch' });
       }
     },
-    *fetchSelect(_, { call, put }) {
-      const params = {
-        q: 'select',
-      };
-      const response = yield call(parkService.query, params);
-      yield put({
-        type: 'saveSelectData',
-        payload: response.list || [],
-      });
-    },
   },
   reducers: {
     saveData(state, { payload }) {
@@ -184,9 +173,6 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
-    },
-    saveSelectData(state, { payload }) {
-      return { ...state, selectData: payload };
     },
   },
 };

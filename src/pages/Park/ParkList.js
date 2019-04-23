@@ -190,11 +190,6 @@ class ParkList extends PureComponent {
         width: 200,
       },
       {
-        title: '位置',
-        dataIndex: 'location',
-        width: 200,
-      },
-      {
         title: '建筑面积',
         dataIndex: 'floor_area',
         width: 200,

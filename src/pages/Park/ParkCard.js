@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Modal, Row, Col, InputNumber, Tooltip, Icon } from 'antd';
+import { Form, Input, Modal, Row, Col, Tooltip, Icon } from 'antd';
 
 @connect(state => ({
   park: state.park,
@@ -15,8 +15,6 @@ class ParkCard extends PureComponent {
         return;
       }
       const formData = { ...values };
-      formData.floor_area = formData.floor_area.toString();
-      formData.total_area = formData.total_area.toString();
       onSubmit(formData);
     });
   };
@@ -92,7 +90,7 @@ class ParkCard extends PureComponent {
                   <Input
                     placeholder="请输入位置"
                     suffix={
-                      <Tooltip title="Extra information">
+                      <Tooltip title="地图选取位置">
                         <Icon type="environment" style={{ color: 'rgb(47, 84, 235)' }} />
                       </Tooltip>
                     }
@@ -103,29 +101,29 @@ class ParkCard extends PureComponent {
           </Row>
           <Row>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="占地面积(㎡)">
+              <Form.Item {...formItemLayout} label="占地面积">
                 {getFieldDecorator('floor_area', {
-                  initialValue: formData.floor_area ? formData.floor_area.toString() : '0',
+                  initialValue: formData.floor_area,
                   rules: [
                     {
                       required: false,
                       message: '请输入占地面积',
                     },
                   ],
-                })(<InputNumber min={0.01} style={{ width: '100%' }} />)}
+                })(<Input placeholder="请输入占地面积" />)}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="总面积(㎡)">
+              <Form.Item {...formItemLayout} label="总面积">
                 {getFieldDecorator('total_area', {
-                  initialValue: formData.total_area ? formData.total_area.toString() : '0',
+                  initialValue: formData.total_area,
                   rules: [
                     {
                       required: false,
                       message: '请输入总面积',
                     },
                   ],
-                })(<InputNumber min={0.01} style={{ width: '100%' }} />)}
+                })(<Input placeholder="请输入总面积" />)}
               </Form.Item>
             </Col>
           </Row>

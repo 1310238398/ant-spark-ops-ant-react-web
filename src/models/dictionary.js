@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import * as dictionariesService from '@/services/dictionaries';
+import * as dictionaryService from '@/services/dictionary';
 
 export default {
-  namespace: 'dictionaries',
+  namespace: 'dictionary',
   state: {
     search: {},
     pagination: {},
@@ -32,7 +32,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select(state => state.dictionaries.search);
+        const s = yield select(state => state.dictionary.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -45,13 +45,13 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select(state => state.dictionaries.pagination);
+        const p = yield select(state => state.dictionary.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(dictionariesService.query, params);
+      const response = yield call(dictionaryService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
@@ -99,7 +99,7 @@ export default {
           }),
         ];
       } else {
-        const search = yield select(state => state.dictionaries.search);
+        const search = yield select(state => state.dictionary.search);
         yield put({
           type: 'saveFormData',
           payload: { parent_id: search.parent_id ? search.parent_id : '' },
@@ -107,7 +107,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(dictionariesService.get, payload);
+      const response = yield call(dictionaryService.get, payload);
       yield put({
         type: 'saveFormData',
         payload: response,
@@ -120,14 +120,14 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select(state => state.dictionaries.formType);
+      const formType = yield select(state => state.dictionary.formType);
       let success = false;
       let response;
       if (formType === 'E') {
-        params.record_id = yield select(state => state.dictionaries.formID);
-        response = yield call(dictionariesService.update, params);
+        params.record_id = yield select(state => state.dictionary.formID);
+        response = yield call(dictionaryService.update, params);
       } else {
-        response = yield call(dictionariesService.create, params);
+        response = yield call(dictionaryService.create, params);
       }
       if (response.record_id && response.record_id !== '') {
         success = true;
@@ -150,7 +150,7 @@ export default {
       }
     },
     *del({ payload }, { call, put }) {
-      const response = yield call(dictionariesService.del, payload);
+      const response = yield call(dictionaryService.del, payload);
       if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'fetchTree' });
@@ -164,19 +164,12 @@ export default {
       if (payload) {
         params = { ...params, ...payload };
       }
-      const response = yield call(dictionariesService.query, params);
+      const response = yield call(dictionaryService.query, params);
       const list = response.list || [];
       yield put({
         type: 'saveTreeData',
         payload: list,
       });
-
-      if (list.length > 0) {
-        yield put({
-          type: 'saveExpandedKeys',
-          payload: [list[0].record_id],
-        });
-      }
     },
   },
   reducers: {

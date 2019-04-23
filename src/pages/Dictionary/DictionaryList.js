@@ -3,17 +3,17 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Table, Modal, Layout, Tree } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
-import DictionariesCard from './DictionariesCard';
+import DictionaryCard from './DictionaryCard';
 
-import styles from './DictionariesList.less';
+import styles from './DictionaryList.less';
 
 const codeSeparator = '$#';
-@connect(({ dictionaries, loading }) => ({
-  dictionaries,
-  loading: loading.models.dictionaries,
+@connect(({ dictionary, loading }) => ({
+  dictionary,
+  loading: loading.models.dictionary,
 }))
 @Form.create()
-class DictionariesList extends PureComponent {
+class dictionaryList extends PureComponent {
   state = {
     selectedRowKeys: [],
     selectedRows: [],
@@ -22,14 +22,17 @@ class DictionariesList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'dictionaries/fetchTree',
+      type: 'dictionary/fetchTree',
     });
 
     this.dispatch({
-      type: 'dictionaries/fetch',
+      type: 'dictionary/fetch',
       search: {},
       pagination: {},
     });
+    // this.dispatch({
+    //   type: 'dictionary/loadTree',
+    // });
   }
 
   handleEditClick = () => {
@@ -39,7 +42,7 @@ class DictionariesList extends PureComponent {
     }
     const item = selectedRows[0];
     this.dispatch({
-      type: 'dictionaries/loadForm',
+      type: 'dictionary/loadForm',
       payload: {
         type: 'E',
         id: item.record_id,
@@ -49,7 +52,7 @@ class DictionariesList extends PureComponent {
 
   handleAddClick = () => {
     this.dispatch({
-      type: 'dictionaries/loadForm',
+      type: 'dictionary/loadForm',
       payload: {
         type: 'A',
       },
@@ -80,7 +83,7 @@ class DictionariesList extends PureComponent {
 
   onTableChange = pagination => {
     this.dispatch({
-      type: 'dictionaries/fetch',
+      type: 'dictionary/fetch',
       pagination: {
         current: pagination.current,
         pageSize: pagination.pageSize,
@@ -93,7 +96,7 @@ class DictionariesList extends PureComponent {
     const { form } = this.props;
     form.resetFields();
     this.dispatch({
-      type: 'dictionaries/fetch',
+      type: 'dictionary/fetch',
       search: { parent_id: this.getParentID() },
       pagination: {},
     });
@@ -110,7 +113,7 @@ class DictionariesList extends PureComponent {
         return;
       }
       this.dispatch({
-        type: 'dictionaries/fetch',
+        type: 'dictionary/fetch',
         search: {
           ...values,
           parent_id: this.getParentID(),
@@ -123,7 +126,7 @@ class DictionariesList extends PureComponent {
 
   handleFormSubmit = data => {
     this.dispatch({
-      type: 'dictionaries/submit',
+      type: 'dictionary/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -131,7 +134,7 @@ class DictionariesList extends PureComponent {
 
   handleFormCancel = () => {
     this.dispatch({
-      type: 'dictionaries/changeFormVisible',
+      type: 'dictionary/changeFormVisible',
       payload: false,
     });
   };
@@ -160,14 +163,14 @@ class DictionariesList extends PureComponent {
 
   handleDelOKClick(id) {
     this.dispatch({
-      type: 'dictionaries/del',
+      type: 'dictionary/del',
       payload: { record_id: id },
     });
     this.clearSelectRows();
   }
 
   renderDataForm() {
-    return <DictionariesCard onCancel={this.handleFormCancel} onSubmit={this.handleFormSubmit} />;
+    return <DictionaryCard onCancel={this.handleFormCancel} onSubmit={this.handleFormSubmit} />;
   }
 
   renderTreeNodes = data =>
@@ -214,7 +217,7 @@ class DictionariesList extends PureComponent {
   render() {
     const {
       loading,
-      dictionaries: {
+      dictionary: {
         data: { list, pagination },
         treeData,
         expandedKeys,
@@ -285,7 +288,7 @@ class DictionariesList extends PureComponent {
                 });
 
                 const {
-                  dictionaries: { search },
+                  dictionary: { search },
                 } = this.props;
 
                 const item = {
@@ -297,14 +300,14 @@ class DictionariesList extends PureComponent {
                 }
 
                 this.dispatch({
-                  type: 'dictionaries/fetch',
+                  type: 'dictionary/fetch',
                   search: { ...search, ...item },
                   pagination: {},
                 });
               }}
               onExpand={keys => {
                 this.dispatch({
-                  type: 'dictionaries/saveExpandedKeys',
+                  type: 'dictionary/saveExpandedKeys',
                   payload: keys,
                 });
               }}
@@ -367,4 +370,4 @@ class DictionariesList extends PureComponent {
     );
   }
 }
-export default DictionariesList;
+export default dictionaryList;

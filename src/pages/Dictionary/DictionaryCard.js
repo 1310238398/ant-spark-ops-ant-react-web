@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Card, Modal, TreeSelect, InputNumber, Row, Col } from 'antd';
 
-@connect(({ dictionaries }) => ({
-  dictionaries,
+@connect(({ dictionary }) => ({
+  dictionary,
 }))
 @Form.create()
-class DictionariesCard extends PureComponent {
+class DictionaryCard extends PureComponent {
   onOKClick = () => {
     const { form, onSubmit } = this.props;
     form.validateFieldsAndScroll((err, values) => {
@@ -40,7 +40,7 @@ class DictionariesCard extends PureComponent {
 
   render() {
     const {
-      dictionaries: { formVisible, formTitle, formData, submitting, treeData },
+      dictionary: { formVisible, formTitle, formData, submitting, treeData },
       form: { getFieldDecorator },
       onCancel,
     } = this.props;
@@ -157,4 +157,4 @@ class DictionariesCard extends PureComponent {
   }
 }
 
-export default DictionariesCard;
+export default DictionaryCard;
