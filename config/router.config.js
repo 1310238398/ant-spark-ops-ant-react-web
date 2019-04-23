@@ -25,6 +25,13 @@ export default [
           { path: '/system/user', component: './User/UserList' },
         ],
       },
+      {
+        path: 'basic',
+        routes: [
+          { path: '/basic/dictionary', component: './Dictionary/DictionaryList' },
+          { path: '/basic/park', component: './Park/ParkList' },
+        ],
+      },
     ],
   },
   {
