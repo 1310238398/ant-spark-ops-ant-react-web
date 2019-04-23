@@ -21,7 +21,7 @@ class MenuList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'menu/fetchTree',
+      type: 'menu/loadTree',
     });
 
     this.dispatch({

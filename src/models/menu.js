@@ -20,6 +20,18 @@ export default {
     expandedKeys: [],
   },
   effects: {
+    *loadTree(_, { put, select }) {
+      yield yield put({ type: 'fetchTree' });
+      const treeData = yield select(state => state.menu.treeData);
+      const expandedKeys = [];
+      for (let i = 0; i < treeData.length; i += 1) {
+        expandedKeys.push(treeData[i].record_id);
+      }
+      yield put({
+        type: 'saveExpandedKeys',
+        payload: expandedKeys,
+      });
+    },
     *fetch({ search, pagination }, { call, put, select }) {
       let params = {
         q: 'page',
@@ -170,13 +182,6 @@ export default {
         type: 'saveTreeData',
         payload: list,
       });
-
-      if (list.length > 0) {
-        yield put({
-          type: 'saveExpandedKeys',
-          payload: [list[0].record_id],
-        });
-      }
     },
   },
   reducers: {
