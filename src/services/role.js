@@ -30,3 +30,9 @@ export async function del(params) {
     method: 'DELETE',
   });
 }
+export async function queryRolepark(params) {
+  return request(`/v1/parks?${stringify(params)}`);
+}
+export async function queryRoleCategory(params) {
+  return request(`/v1/dictionaries?${stringify(params)}`);
+}

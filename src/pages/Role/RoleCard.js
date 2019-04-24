@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import { Form, Input, Modal, message, Card, Row, Col, InputNumber } from 'antd';
 
 import RoleMenu from './RoleMenu';
+import RoleparkSelect from './ParkSelect';
+import RoleSelectCategory from './RoleSelectCategory';
 
 @connect(state => ({
   role: state.role,
@@ -75,6 +77,33 @@ class RoleCard extends PureComponent {
                 })(<Input placeholder="请输入角色名称" />)}
               </Form.Item>
             </Col>
+            <Col>
+              <Form.Item {...formItemLayout} label="所在园区">
+                {getFieldDecorator('park_id', {
+                  initialValue: formData.park_id,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入园区',
+                    },
+                  ],
+                })(<RoleparkSelect />)}
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item {...formItemLayout} label="分类">
+                {getFieldDecorator('category', {
+                  initialValue: formData.category,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入分类',
+                    },
+                  ],
+                })(<RoleSelectCategory />)}
+              </Form.Item>
+            </Col>
+
             <Col>
               <Form.Item {...formItemLayout} label="排序值">
                 {getFieldDecorator('sequence', {

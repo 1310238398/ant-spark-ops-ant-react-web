@@ -30,9 +30,6 @@ class dictionaryList extends PureComponent {
       search: {},
       pagination: {},
     });
-    // this.dispatch({
-    //   type: 'dictionary/loadTree',
-    // });
   }
 
   handleEditClick = () => {
