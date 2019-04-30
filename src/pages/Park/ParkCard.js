@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Row, Col, Tooltip, Icon } from 'antd';
+import PicturesWall from '../../components/PicturesWall/PicturesWall';
 
 @connect(state => ({
   park: state.park,
@@ -15,6 +16,11 @@ class ParkCard extends PureComponent {
         return;
       }
       const formData = { ...values };
+      if (formData.logo && formData.logo.length > 0) {
+        formData.logo = formData.logo.join('');
+      } else {
+        formData.logo = '';
+      }
       onSubmit(formData);
     });
   };
@@ -124,6 +130,62 @@ class ParkCard extends PureComponent {
                     },
                   ],
                 })(<Input placeholder="请输入总面积" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="产权所有人">
+                {getFieldDecorator('property_owner', {
+                  initialValue: formData.property_owner,
+                  rules: [
+                    {
+                      required: false,
+                      message: '请输入产权所有人',
+                    },
+                  ],
+                })(<Input placeholder="请输入产权所有人" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="联系人">
+                {getFieldDecorator('contact', {
+                  initialValue: formData.contact,
+                  rules: [
+                    {
+                      required: false,
+                      message: '请输入联系人',
+                    },
+                  ],
+                })(<Input placeholder="请输入联系人" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="联系方式">
+                {getFieldDecorator('contact_tel', {
+                  initialValue: formData.contact_tel,
+                  rules: [
+                    {
+                      required: false,
+                      message: '请输入联系方式',
+                    },
+                  ],
+                })(<Input placeholder="请输入联系方式" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="园区LOGO">
+                {getFieldDecorator('logo', {
+                  initialValue: formData.logo ? formData.logo : [],
+                  rules: [
+                    {
+                      required: false,
+                      message: '请上传',
+                    },
+                  ],
+                })(<PicturesWall num={1} bucket="oper" listType="picture-card" />)}
               </Form.Item>
             </Col>
           </Row>
