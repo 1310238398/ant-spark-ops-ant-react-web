@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Select } from 'antd';
-import { queryRolepark } from '@/services/role';
+import { query } from '@/services/park';
 
-export default class RoleSelectCategory extends PureComponent {
+export default class ParkSelect extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -13,7 +13,7 @@ export default class RoleSelectCategory extends PureComponent {
   }
 
   componentDidMount() {
-    queryRolepark({ q: 'select' }).then(data => {
+    query({ q: 'select' }).then(data => {
       this.setState({ data: data.list || [] });
     });
   }

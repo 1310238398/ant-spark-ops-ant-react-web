@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Cascader } from 'antd';
-import { queryRoleCategory } from '@/services/role';
+import { query } from '@/services/dictionary';
+
+const sep = '/';
 
 function parseValue(value) {
-  return value ? value.split(',') : [];
+  return value ? value.split(sep) : [];
 }
 
 export default class RoleSelectCategory extends PureComponent {
@@ -17,11 +19,9 @@ export default class RoleSelectCategory extends PureComponent {
   }
 
   componentDidMount() {
-    queryRoleCategory({ q: 'tree', parent_code: 'com$#EnterpriseCategory', level: '-1' }).then(
-      data => {
-        this.setState({ data: this.toTreeSelect(data.list) });
-      }
-    );
+    query({ q: 'tree', parent_code: 'com$#EnterpriseCategory', level: '-1' }).then(data => {
+      this.setState({ data: this.toTreeSelect(data.list) });
+    });
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -54,7 +54,7 @@ export default class RoleSelectCategory extends PureComponent {
   triggerChange = data => {
     const { onChange } = this.props;
     if (onChange) {
-      onChange(data.join(','));
+      onChange(data.join(sep));
     }
   };
 
