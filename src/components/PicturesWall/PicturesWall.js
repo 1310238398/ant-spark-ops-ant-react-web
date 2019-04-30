@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Upload, Icon, Modal, Button } from 'antd';
 import styles from './PicturesWall.less';
 
-const defaction = '/proxy/web/v1/files';
+const defaction = '/ops/web/v1/files';
 
 export default class PicturesWall extends React.Component {
   static propTypes = {

@@ -180,14 +180,14 @@ class ParkCard extends PureComponent {
             <Col span={12}>
               <Form.Item {...formItemLayout} label="园区LOGO">
                 {getFieldDecorator('logo', {
-                  initialValue: formData.logo ? formData.logo : [],
+                  initialValue: formData.logo ? [formData.logo] : [],
                   rules: [
                     {
                       required: false,
                       message: '请上传',
                     },
                   ],
-                })(<PicturesWall num={1} bucket="oper" listType="picture-card" />)}
+                })(<PicturesWall num={1} bucket="park" listType="picture-card" />)}
               </Form.Item>
             </Col>
           </Row>
