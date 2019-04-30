@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Row, Col, Tooltip, Icon } from 'antd';
 import PicturesWall from '../../components/PicturesWall/PicturesWall';
+import { checkPhoneNum } from '../../utils/utils';
 
 @connect(state => ({
   park: state.park,
@@ -171,6 +172,7 @@ class ParkCard extends PureComponent {
                       required: false,
                       message: '请输入联系方式',
                     },
+                    { validator: checkPhoneNum },
                   ],
                 })(<Input placeholder="请输入联系方式" />)}
               </Form.Item>

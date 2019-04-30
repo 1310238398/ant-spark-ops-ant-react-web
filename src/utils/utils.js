@@ -39,3 +39,12 @@ export function md5Hash(value) {
 export function newUUID() {
   return uuid();
 }
+// Form 表单验证手机号
+export function checkPhoneNum(_, value, callback) {
+  if (value) {
+    if (!/^1(3|4|5|7|8)\d{9}$/.test(value)) {
+      callback('请输入正确的手机号');
+    }
+  }
+  callback();
+}

@@ -200,8 +200,18 @@ class ParkList extends PureComponent {
         width: 200,
       },
       {
-        title: '备注',
-        dataIndex: 'memo',
+        title: '产权所有人',
+        dataIndex: 'property_owner',
+        width: 300,
+      },
+      {
+        title: '联系人',
+        dataIndex: 'contact',
+        width: 200,
+      },
+      {
+        title: '联系方式',
+        dataIndex: 'contact_tel',
       },
     ];
 
