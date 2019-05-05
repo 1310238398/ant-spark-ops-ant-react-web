@@ -22,7 +22,7 @@ class dictionaryList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'dictionary/fetchTree',
+      type: 'dictionary/loadTree',
     });
 
     this.dispatch({

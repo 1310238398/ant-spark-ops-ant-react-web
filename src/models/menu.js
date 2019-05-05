@@ -24,8 +24,8 @@ export default {
       yield yield put({ type: 'fetchTree' });
       const treeData = yield select(state => state.menu.treeData);
       const expandedKeys = [];
-      for (let i = 0; i < treeData.length; i += 1) {
-        expandedKeys.push(treeData[i].record_id);
+      if (treeData.length > 0) {
+        expandedKeys.push(treeData[0].record_id);
       }
       yield put({
         type: 'saveExpandedKeys',
