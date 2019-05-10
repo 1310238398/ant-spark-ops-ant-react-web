@@ -1,14 +1,19 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Cascader } from 'antd';
 import { query } from '@/services/dictionary';
 
-const sep = '/';
+const sep = '$#';
 
 function parseValue(value) {
   return value ? value.split(sep) : [];
 }
 
-export default class RoleSelectCategory extends PureComponent {
+export default class DictionaryCascader extends PureComponent {
+  static propTypes = {
+    code: PropTypes.string.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -19,7 +24,13 @@ export default class RoleSelectCategory extends PureComponent {
   }
 
   componentDidMount() {
-    query({ q: 'tree', parent_code: 'com$#EnterpriseCategory', level: '-1' }).then(data => {
+    const { code, level } = this.props;
+
+    let lev = '0';
+    if (level) {
+      lev = level;
+    }
+    query({ q: 'tree', parent_code: code, level: lev }).then(data => {
       this.setState({ data: this.toTreeSelect(data.list) });
     });
   }
@@ -54,7 +65,8 @@ export default class RoleSelectCategory extends PureComponent {
   triggerChange = data => {
     const { onChange } = this.props;
     if (onChange) {
-      onChange(data.join(sep));
+      const value = data.join(sep);
+      onChange(value);
     }
   };
 

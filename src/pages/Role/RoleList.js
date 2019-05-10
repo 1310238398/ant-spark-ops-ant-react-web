@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Table, Modal } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
+import ParkSelect from '@/components/ParkSelect';
 import RoleCard from './RoleCard';
 
 import styles from './RoleList.less';
@@ -152,6 +153,9 @@ class RoleList extends PureComponent {
       <Form onSubmit={this.handleSearchFormSubmit} layout="inline">
         <Row gutter={16}>
           <Col md={8} sm={24}>
+            <Form.Item label="所属园区">{getFieldDecorator('park_id')(<ParkSelect />)}</Form.Item>
+          </Col>
+          <Col md={8} sm={24}>
             <Form.Item label="角色名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </Form.Item>
@@ -185,6 +189,11 @@ class RoleList extends PureComponent {
 
     const columns = [
       {
+        title: '所属园区',
+        dataIndex: 'park_name',
+        width: 150,
+      },
+      {
         title: '角色名称',
         dataIndex: 'name',
         width: 200,
@@ -192,7 +201,7 @@ class RoleList extends PureComponent {
       {
         title: '排序值',
         dataIndex: 'sequence',
-        width: 100,
+        width: 120,
       },
       {
         title: '角色备注',

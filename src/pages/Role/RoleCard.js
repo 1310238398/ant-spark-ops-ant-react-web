@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, message, Card, Row, Col, InputNumber } from 'antd';
 
+import ParkSelect from '@/components/ParkSelect';
+import DictionaryCascader from '@/components/Dictionary/Cascader';
+
 import RoleMenu from './RoleMenu';
-import ParkSelect from './ParkSelect';
-import CategorySelect from './CategorySelect';
 
 @connect(state => ({
   role: state.role,
@@ -65,6 +66,32 @@ class RoleCard extends PureComponent {
         <Form>
           <Row>
             <Col>
+              <Form.Item {...formItemLayout} label="所属园区">
+                {getFieldDecorator('park_id', {
+                  initialValue: formData.park_id,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择所属园区',
+                    },
+                  ],
+                })(<ParkSelect />)}
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item {...formItemLayout} label="角色分类">
+                {getFieldDecorator('category', {
+                  initialValue: formData.category,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择角色分类',
+                    },
+                  ],
+                })(<DictionaryCascader code="ops$#role_category" level="-1" />)}
+              </Form.Item>
+            </Col>
+            <Col>
               <Form.Item {...formItemLayout} label="角色名称">
                 {getFieldDecorator('name', {
                   initialValue: formData.name,
@@ -78,38 +105,12 @@ class RoleCard extends PureComponent {
               </Form.Item>
             </Col>
             <Col>
-              <Form.Item {...formItemLayout} label="所属园区">
-                {getFieldDecorator('park_id', {
-                  initialValue: formData.park_id,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请选择园区',
-                    },
-                  ],
-                })(<ParkSelect />)}
-              </Form.Item>
-            </Col>
-            <Col>
-              <Form.Item {...formItemLayout} label="所属分类">
-                {getFieldDecorator('category', {
-                  initialValue: formData.category,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请选择分类',
-                    },
-                  ],
-                })(<CategorySelect />)}
-              </Form.Item>
-            </Col>
-            <Col>
               <Form.Item {...formItemLayout} label="排序值">
                 {getFieldDecorator('sequence', {
                   initialValue: formData.sequence ? formData.sequence.toString() : '1000000',
                   rules: [
                     {
-                      required: true,
+                      required: false,
                       message: '请输入排序值',
                     },
                   ],
