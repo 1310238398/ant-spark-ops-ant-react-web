@@ -24,6 +24,7 @@ export default [
           { path: '/system/role', component: './Role/RoleList' },
           { path: '/system/user', component: './User/UserList' },
           { path: '/system/systemparameter', component: './SystemParameter/SystemParameterList' },
+          { path: '/system/appversion', component: './AppVersion' },
         ],
       },
       {
