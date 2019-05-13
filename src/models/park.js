@@ -145,6 +145,37 @@ export default {
         yield put({ type: 'fetch' });
       }
     },
+    *changeStatus({ payload }, { call, put, select }) {
+      let response;
+      if (payload.status === 1) {
+        response = yield call(parkService.enable, payload);
+      } else {
+        response = yield call(parkService.disable, payload);
+      }
+
+      if (response.status === 'OK') {
+        let msg = '启用成功';
+        if (payload.status === 2) {
+          msg = '停用成功';
+        }
+        message.success(msg);
+        const data = yield select(state => state.park.data);
+        const newData = { list: [], pagination: data.pagination };
+
+        for (let i = 0; i < data.list.length; i += 1) {
+          const item = data.list[i];
+          if (item.record_id === payload.record_id) {
+            item.status = payload.status;
+          }
+          newData.list.push(item);
+        }
+
+        yield put({
+          type: 'saveData',
+          payload: newData,
+        });
+      }
+    },
   },
   reducers: {
     saveData(state, { payload }) {

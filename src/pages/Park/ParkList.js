@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Table, Modal } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Table, Modal, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import ParkCard from './ParkCard';
@@ -131,6 +131,20 @@ class ParkList extends PureComponent {
     });
   };
 
+  handleItemDisableClick = item => {
+    this.dispatch({
+      type: 'park/changeStatus',
+      payload: { record_id: item.record_id, status: 2 },
+    });
+  };
+
+  handleItemEnableClick = item => {
+    this.dispatch({
+      type: 'park/changeStatus',
+      payload: { record_id: item.record_id, status: 1 },
+    });
+  };
+
   handleDelOKClick(id) {
     this.dispatch({
       type: 'park/del',
@@ -192,26 +206,38 @@ class ParkList extends PureComponent {
       {
         title: '建筑面积',
         dataIndex: 'floor_area',
-        width: 200,
+        width: 150,
       },
       {
         title: '总面积',
         dataIndex: 'total_area',
-        width: 200,
+        width: 150,
       },
       {
         title: '产权所有人',
         dataIndex: 'property_owner',
-        width: 300,
+        width: 200,
       },
       {
         title: '联系人',
         dataIndex: 'contact',
-        width: 200,
+        width: 150,
       },
       {
         title: '联系方式',
         dataIndex: 'contact_tel',
+        width: 200,
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        width: 100,
+        render: val => {
+          if (val === 1) {
+            return <Badge status="success" text="启用" />;
+          }
+          return <Badge status="error" text="停用" />;
+        },
       },
     ];
 
@@ -251,6 +277,27 @@ class ParkList extends PureComponent {
                 >
                   删除
                 </PButton>,
+                selectedRows[0].status === 2 && (
+                  <PButton
+                    key="enable"
+                    code="enable"
+                    icon="check"
+                    onClick={() => this.handleItemEnableClick(selectedRows[0])}
+                  >
+                    启用
+                  </PButton>
+                ),
+                selectedRows[0].status === 1 && (
+                  <PButton
+                    key="disable"
+                    code="disable"
+                    icon="stop"
+                    type="danger"
+                    onClick={() => this.handleItemDisableClick(selectedRows[0])}
+                  >
+                    禁用
+                  </PButton>
+                ),
               ]}
             </div>
             <div>

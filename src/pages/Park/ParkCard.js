@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Modal, Row, Col, Tooltip, Icon } from 'antd';
+import { Form, Input, Modal, Row, Col, Tooltip, Icon, Radio } from 'antd';
 import PicturesWall from '../../components/PicturesWall/PicturesWall';
 import { checkPhoneNum } from '../../utils/utils';
 
@@ -17,6 +17,7 @@ class ParkCard extends PureComponent {
         return;
       }
       const formData = { ...values };
+      formData.status = parseInt(formData.status, 10);
       if (formData.logo && formData.logo.length > 0) {
         formData.logo = formData.logo.join('');
       } else {
@@ -46,7 +47,7 @@ class ParkCard extends PureComponent {
         span: 18,
       },
     };
-    const formItemLayoutmome = {
+    const formItemLayout2 = {
       labelCol: {
         span: 3,
       },
@@ -193,10 +194,24 @@ class ParkCard extends PureComponent {
           </Row>
           <Row>
             <Col span={24}>
-              <Form.Item {...formItemLayoutmome} label="园区描述">
+              <Form.Item {...formItemLayout2} label="园区描述">
                 {getFieldDecorator('memo', {
                   initialValue: formData.memo,
                 })(<Input.TextArea rows={2} placeholder="请输入园区描述" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Form.Item {...formItemLayout2} label="状态">
+                {getFieldDecorator('status', {
+                  initialValue: formData.status ? formData.status.toString() : '1',
+                })(
+                  <Radio.Group>
+                    <Radio value="1">正常</Radio>
+                    <Radio value="2">停用</Radio>
+                  </Radio.Group>
+                )}
               </Form.Item>
             </Col>
           </Row>
