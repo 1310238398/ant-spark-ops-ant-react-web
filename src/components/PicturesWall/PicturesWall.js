@@ -66,7 +66,12 @@ export default class PicturesWall extends React.Component {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    const { previewVisible } = this.state;
+    if (previewVisible !== nextState.previewVisible) {
+      return true;
+    }
+
     if (nextProps.value) {
       const fileList = nextProps.value;
       if (fileList) {
