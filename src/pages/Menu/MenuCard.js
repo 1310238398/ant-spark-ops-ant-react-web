@@ -125,7 +125,7 @@ class MenuCard extends PureComponent {
                         initialValue: formData.icon,
                         rules: [
                           {
-                            required: true,
+                            required: false,
                             message: '请输入菜单图标',
                           },
                         ],
