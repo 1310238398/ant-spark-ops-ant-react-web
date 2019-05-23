@@ -309,6 +309,8 @@ class MenuList extends PureComponent {
                   search: { ...search, ...item },
                   pagination: {},
                 });
+
+                this.clearSelectRows();
               }}
               onExpand={keys => {
                 this.dispatch({
