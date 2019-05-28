@@ -56,6 +56,10 @@ export default {
       target: 'http://39.98.250.155:8096/',
       changeOrigin: true,
     },
+    '/proxy/': {
+      target: 'http://39.98.250.155:11088/',
+      changeOrigin: true,
+    },
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
