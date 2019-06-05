@@ -3,6 +3,9 @@ import request from '@/utils/request';
 
 const router = 'dictionaries';
 
+export async function queryPage(params) {
+  return request(`/v1/${router}?${stringify(params)}`);
+}
 export async function query(params) {
   return request(`/v1/${router}?${stringify(params)}`);
 }

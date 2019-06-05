@@ -34,6 +34,21 @@ export default [
           { path: '/basic/park', component: './Park/ParkList' },
         ],
       },
+      {
+        path: 'electronic',
+        routes: [
+          {
+            name: '电子发票销售方配置项',
+            path: '/electronic/electronicsellervoice',
+            component: './ElectronicInvoiceIssuance/ElectronicSellervoice',
+          },
+          {
+            name: '电子发票配置项',
+            path: '/electronic/electronicinvoice',
+            component: './ElectronicInvoiceIssuance/ElectronicInvoiceIssuance',
+          },
+        ],
+      },
     ],
   },
   {
