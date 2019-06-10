@@ -1,21 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import {
-  Form,
-  Input,
-  Card,
-  Radio,
-  Modal,
-  Icon,
-  TreeSelect,
-  Tooltip,
-  InputNumber,
-  Row,
-  Col,
-} from 'antd';
+import { Form, Input, Card, Radio, Modal, TreeSelect, InputNumber, Row, Col } from 'antd';
 
 import MenuAction from './MenuAction';
 import MenuResource from './MenuResource';
+import MenuUpload from '../../components/MenuUpload';
 
 @connect(({ menu }) => ({
   menu,
@@ -54,6 +43,8 @@ class MenuCard extends PureComponent {
     return newData;
   };
 
+  handleChange = () => {};
+
   render() {
     const {
       menu: { formVisible, formTitle, formData, submitting, treeData },
@@ -67,6 +58,15 @@ class MenuCard extends PureComponent {
       },
       wrapperCol: {
         span: 18,
+      },
+    };
+
+    const formItemLayout2 = {
+      labelCol: {
+        span: 3,
+      },
+      wrapperCol: {
+        span: 21,
       },
     };
 
@@ -117,30 +117,23 @@ class MenuCard extends PureComponent {
               </Col>
             </Row>
             <Row>
-              <Col span={12}>
-                <Form.Item {...formItemLayout} label="菜单图标">
-                  <Row>
-                    <Col span={20}>
-                      {getFieldDecorator('icon', {
-                        initialValue: formData.icon,
-                        rules: [
-                          {
-                            required: false,
-                            message: '请输入菜单图标',
-                          },
-                        ],
-                      })(<Input placeholder="请输入" />)}
-                    </Col>
-                    <Col span={4} style={{ textAlign: 'center' }}>
-                      <Tooltip title="图标仅支持官方Icon图标">
-                        <Icon type="question-circle" />
-                      </Tooltip>
-                    </Col>
-                  </Row>
+              <Col span={24}>
+                <Form.Item {...formItemLayout2} label="菜单图标">
+                  {getFieldDecorator('icon', {
+                    initialValue: formData.icon,
+                    rules: [
+                      {
+                        required: false,
+                        message: '请输入菜单图标',
+                      },
+                    ],
+                  })(<MenuUpload />)}
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item {...formItemLayout} label="访问路由">
+            </Row>
+            <Row>
+              <Col span={24}>
+                <Form.Item {...formItemLayout2} label="访问路由">
                   {getFieldDecorator('router', {
                     initialValue: formData.router,
                   })(<Input placeholder="请输入" />)}
