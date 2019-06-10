@@ -13,10 +13,12 @@ const FormItem = Form.Item;
 }))
 class ElectronicSellervoiceAdd extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'electronicSellervoice/queryElectrioncOne',
-      params: this.props.data.record_id,
-    });
+    if (this.props.data.record_id) {
+      this.props.dispatch({
+        type: 'electronicSellervoice/queryElectrioncOne',
+        params: this.props.data.record_id,
+      });
+    }
   }
 
   onDataoffCallback = () => {

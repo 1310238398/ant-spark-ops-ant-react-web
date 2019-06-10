@@ -15,10 +15,13 @@ const RadioGroup = Radio.Group;
 }))
 class ElectronicInvoiceIssuanceAdd extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'electronicInvoic/queryElectrioncOne',
-      params: this.props.data.record_id,
-    });
+    if (this.props.data.record_id) {
+      this.props.dispatch({
+        type: 'electronicInvoic/queryElectrioncOne',
+        params: this.props.data.record_id,
+      });
+    }
+
     this.props.dispatch({
       type: 'electronicSellervoice/queryelemList',
       pagination: {
