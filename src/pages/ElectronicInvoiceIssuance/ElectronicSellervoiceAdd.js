@@ -4,7 +4,7 @@ import { Modal, Form, Input, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './ElectronicInvoiceIssuance.less';
 import ParkSelect from '@/components/ParkSelect';
-import { checkPhoneNum } from '@/utils/utils';
+// import { checkPhoneNum } from '@/utils/utils';
 // const { Option } = Select;
 const FormItem = Form.Item;
 @Form.create()
@@ -142,9 +142,8 @@ class ElectronicSellervoiceAdd extends PureComponent {
                       required: false,
                       message: '请输入',
                     },
-                    { validator: checkPhoneNum },
                   ],
-                })(<Input placeholder="请输入" maxLength={100} />)}
+                })(<Input placeholder="请输入" maxLength={13} />)}
               </Form.Item>
             </Col>
             <Col span={12}>
