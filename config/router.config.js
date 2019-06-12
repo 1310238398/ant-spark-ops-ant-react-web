@@ -47,6 +47,11 @@ export default [
             path: '/electronic/electronicinvoice',
             component: './ElectronicInvoiceIssuance/ElectronicInvoiceIssuance',
           },
+          {
+            name: '电子发票业务配置项',
+            path: '/electronic/electronicitem',
+            component: './ElectronicInvoiceIssuance/ElectronicItem',
+          },
         ],
       },
     ],

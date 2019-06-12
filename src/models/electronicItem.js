@@ -2,7 +2,7 @@ import { message } from 'antd';
 import ElectronicInvoiceService from '../services/s_electronicInvoiceIssuance';
 
 export default {
-  namespace: 'electronicSellervoice',
+  namespace: 'electronicItem',
   state: {
     data: {},
     modalVisible: false,

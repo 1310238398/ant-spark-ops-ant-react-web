@@ -1,23 +1,21 @@
 import React, { PureComponent } from 'react';
 // import { Modal, Tag, Button, Card,Table,Menu, Dropdown } from "antd";
-import { Modal, Form, Input, Row, Col, Button, Radio, Select, InputNumber } from 'antd';
+import { Modal, Form, Input, Row, Col, Button, Select } from 'antd';
 import { connect } from 'dva';
 import styles from './ElectronicInvoiceIssuance.less';
-import DictionaryCascader from '@/components/Dictionary/Cascader';
-// import ParkSelect from '@/components/ParkSelect';
+import ParkSelect from '@/components/ParkSelect';
 // const { Option } = Select;
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 @Form.create()
 @connect(state => ({
   electronicInvoic: state.electronicInvoic,
   electronicSellervoice: state.electronicSellervoice,
+  electronicItem: state.electronicItem,
 }))
-class ElectronicInvoiceIssuanceAdd extends PureComponent {
+class ElectronicItemAdd extends PureComponent {
   componentDidMount() {
     if (this.props.data.record_id) {
       this.props.dispatch({
-        type: 'electronicInvoic/queryElectrioncOne',
+        type: 'electronicItem/queryElectrioncOne',
         params: this.props.data.record_id,
       });
     }
@@ -38,14 +36,14 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
           // 编辑
           formData.record_id = this.props.data.record_id;
           this.props.dispatch({
-            type: 'electronicInvoic/EditElem',
+            type: 'electronicItem/EditElem',
             params: formData,
           });
           onElectronicCloseCallback();
         } else if (this.props.mode === 2) {
           // 新建
           this.props.dispatch({
-            type: 'electronicInvoic/insertElem',
+            type: 'electronicItem/insertElem',
             params: formData,
           });
           onElectronicCloseCallback();
@@ -89,7 +87,7 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
       <Modal
         className={styles.frame}
         visible
-        title={mode === 1 ? '电子发票配置项编辑' : '电子发票配置项新建'}
+        title={mode === 1 ? '电子发票业务配置项编辑' : '电子发票业务配置项新建'}
         destroyOnClose
         maskClosable={false}
         onCancel={this.props.onElectronicCloseCallback}
@@ -104,7 +102,7 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
         <Form>
           <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="名称">
+              <Form.Item {...formItemLayout} label="业务编号">
                 {getFieldDecorator('name', {
                   initialValue: EletronicData.name,
                   rules: [
@@ -117,7 +115,7 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="税率">
+              <Form.Item {...formItemLayout} label="业务名称">
                 {getFieldDecorator('rate', {
                   initialValue: EletronicData.rate,
                   rules: [
@@ -126,36 +124,23 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
                       message: '请输入',
                     },
                   ],
-                })(<InputNumber placeholder="请输入" maxLength={100} style={{ width: '100%' }} />)}
+                })(<Input placeholder="请输入" maxLength={100} />)}
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={10} type="flex" justify="space-between">
-            {/* <Col span={12}>
-              <Form.Item {...formItemLayout} label="编码">
-                {getFieldDecorator('code', {
-                  initialValue: EletronicData.code,
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="所属园区">
+                {getFieldDecorator('park_id', {
+                  initialValue: EletronicData.park_id,
                   rules: [
                     {
                       required: true,
                       message: '请输入',
                     },
                   ],
-                })(<Input placeholder="请输入" maxLength={100} />)}
-              </Form.Item>
-            </Col> */}
-            <Col span={12}>
-              <Form.Item {...formItemLayout} label="税收分类名称">
-                {getFieldDecorator('tax_classification', {
-                  initialValue: EletronicData.tax_classification,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请选择',
-                    },
-                  ],
-                })(<DictionaryCascader code="ops$#dzfp" />)}
+                })(<ParkSelect />)}
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -181,25 +166,10 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
                 )}
               </Form.Item>
             </Col>
-            {/* <Col span={12}>
-              <Form.Item {...formItemLayout} label="所属园区">
-                {getFieldDecorator('park_id', {
-                  initialValue: EletronicData.park_id,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入',
-                    },
-                  ],
-                })(<ParkSelect />)}
-              </Form.Item>
-            </Col> */}
-          </Row>
-          <Row>
             <Col span={12}>
-              <FormItem {...formItemLayout} label="单价含税标志">
-                {getFieldDecorator('tax_included', {
-                  initialValue: EletronicData.tax_included,
+              <Form.Item {...formItemLayout} label="开票配置项">
+                {getFieldDecorator('tax_classification', {
+                  initialValue: EletronicData.tax_classification,
                   rules: [
                     {
                       required: false,
@@ -207,12 +177,17 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
                     },
                   ],
                 })(
-                  <RadioGroup value={EletronicData.tax_included}>
-                    <Radio value={1}>是</Radio>
-                    <Radio value={2}>否</Radio>
-                  </RadioGroup>
+                  <Select placeholder="请选择" mode="multiple">
+                    {xfList.map(item => {
+                      return (
+                        <Select.Option key={item.record_id} value={item.record_id}>
+                          {item.name}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
                 )}
-              </FormItem>
+              </Form.Item>
             </Col>
           </Row>
         </Form>
@@ -221,4 +196,4 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
     return resultJsx;
   }
 }
-export default ElectronicInvoiceIssuanceAdd;
+export default ElectronicItemAdd;

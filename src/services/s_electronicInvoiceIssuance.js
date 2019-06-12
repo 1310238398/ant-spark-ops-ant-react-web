@@ -43,6 +43,10 @@ export default class ElectronicInvoiceService {
     return request(`/v1/${buRouterselles}?${stringify(params)}`);
   }
 
+  static async queryXFlists(param) {
+    return request(`/v1/${buRouterselles}?${stringify(param)}`);
+  }
+
   static async insertSelleElem(params) {
     return request(`/v1/${buRouterselles}`, {
       method: 'POST',

@@ -27,11 +27,11 @@ class ElectronicInvoiceIssuanceView extends React.PureComponent {
         footer={footerJsx}
       >
         <DescriptionList size="large" col={1}>
-          <Description term="所在园区">{data.park_name}</Description>
+          {/* <Description term="所在园区">{data.park_name}</Description> */}
           <Description term="名称">{data.name}</Description>
           <Description term="税率">{data.rate}</Description>
           <Description term="税收销售方名称">{data.seller_name}</Description>
-          <Description term="编码">{data.code}</Description>
+          {/* <Description term="编码">{data.code}</Description> */}
           <Description term="含税标志">{data.tax_included === 1 ? '含税' : '不含税'}</Description>
           {/* <Description term="税收分类名称">
             <DicShow pcode="ops$#dzfp" code={[data.tax_classification]} />

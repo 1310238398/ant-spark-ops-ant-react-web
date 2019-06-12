@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Form, Modal, Table } from 'antd';
+import { Card, Form, Modal, Table, Row, Col, Button, Input } from 'antd';
 // import TableList from '../../components/TableList';
 // import FormItem from 'antd/lib/form/FormItem';
 import { connect } from 'dva';
@@ -7,6 +7,7 @@ import { connect } from 'dva';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import ElectronicSellervoiceAdd from './ElectronicSellervoiceAdd';
 import ElectronicSellervoiceView from './ElectronicSellervoiceView';
+// import ParkSelect from '@/components/ParkSelect';
 import PButton from '@/components/PermButton';
 import styles from './ElectronicInvoiceIssuance.less';
 
@@ -51,6 +52,36 @@ class ElectronicSellervoice extends PureComponent {
     this.setState({
       selectedRowKeys: keys,
       selectedRows: rows,
+    });
+  };
+
+  handleSearchFormSubmit = e => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const { form } = this.props;
+    form.validateFields({ force: true }, (err, values) => {
+      if (err) {
+        return;
+      }
+      this.props.dispatch({
+        type: 'electronicSellervoice/queryelemList',
+        params: values,
+        pagination: {},
+      });
+      this.clearSelectRows();
+    });
+  };
+
+  handleResetFormClick = () => {
+    const { form } = this.props;
+    form.resetFields();
+
+    this.props.dispatch({
+      type: 'electronicSellervoice/queryelemList',
+      params: {},
+      pagination: {},
     });
   };
 
@@ -181,6 +212,44 @@ class ElectronicSellervoice extends PureComponent {
     this.clearSelectRows();
   }
 
+  renderSearchForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+
+    return (
+      <Form onSubmit={this.handleSearchFormSubmit} layout="inline">
+        <Row gutter={16}>
+          {/* <Col md={6} sm={24}>
+            <Form.Item label="园区">{getFieldDecorator('ParkID')(<ParkSelect />)}</Form.Item>
+          </Col> */}
+          <Col md={6} sm={24}>
+            <Form.Item label="名称">
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            </Form.Item>
+          </Col>
+          <Col md={6} sm={24}>
+            <Form.Item label="税号">
+              {getFieldDecorator('tax_number')(<Input placeholder="请输入" />)}
+            </Form.Item>
+          </Col>
+          <Col md={6} sm={24}>
+            <div style={{ overflow: 'hidden' }}>
+              <span style={{ marginBottom: 24 }}>
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+                <Button style={{ marginLeft: 8 }} onClick={this.handleResetFormClick}>
+                  重置
+                </Button>
+              </span>
+            </div>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
   render() {
     const {
       electronicSellervoice: {
@@ -190,6 +259,10 @@ class ElectronicSellervoice extends PureComponent {
     } = this.props;
     const { selectedRowKeys, selectedRows } = this.state;
     const columns = [
+      // {
+      //   title: '所在园区',
+      //   dataIndex: 'park_name',
+      // },
       {
         title: '名称',
         dataIndex: 'name',
@@ -214,10 +287,6 @@ class ElectronicSellervoice extends PureComponent {
         title: '开票人',
         dataIndex: 'issuer',
       },
-      {
-        title: '所在园区',
-        dataIndex: 'park_name',
-      },
     ];
     const paginationProps = {
       showSizeChanger: true,
@@ -237,6 +306,7 @@ class ElectronicSellervoice extends PureComponent {
       <PageHeaderLayout title="电子发票销售方配置项">
         <Card bordered={false}>
           <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
               <PButton code="add" icon="plus" type="primary" onClick={() => this.onAddClick()}>
                 新建

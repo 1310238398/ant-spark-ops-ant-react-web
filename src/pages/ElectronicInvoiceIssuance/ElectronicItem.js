@@ -1,31 +1,25 @@
 import React, { PureComponent } from 'react';
-import { Card, Form, Modal, Tag, Table, Row, Col, Button, Input, Select } from 'antd';
+import { Card, Form, Modal, Table, Row, Col, Button, Input, Select } from 'antd';
 // import TableList from '../../components/TableList';
 // import FormItem from 'antd/lib/form/FormItem';
 import { connect } from 'dva';
-import DicShowNew from '../../components/Dictionary/DicShowNew';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import ElectronicInvoiceIssuanceAdd from './ElectronicInvoiceIssuanceAdd';
-import ElectronicInvoiceIssuanceView from './ElectronicInvoiceIssuanceView';
+import ElectronicItemAdd from './ElectronicItemAdd';
 import PButton from '@/components/PermButton';
 import styles from './ElectronicInvoiceIssuance.less';
 // import ParkSelect from '@/components/ParkSelect';
 
 @Form.create()
 @connect(state => ({
-  electronicInvoic: state.electronicInvoic,
   electronicSellervoice: state.electronicSellervoice,
+  electronicItem: state.electronicItem,
 }))
-class ElectronicInvoiceIssuance extends PureComponent {
+class ElectronicItem extends PureComponent {
   state = {
     elemInfoFrame: {
       visible: false,
       data: null,
       mode: null,
-    },
-    showElemInfoFrame: {
-      visible: false,
-      data: null,
     },
     selectedRowKeys: [],
     selectedRows: [],
@@ -40,30 +34,8 @@ class ElectronicInvoiceIssuance extends PureComponent {
     this.props.dispatch({
       type: 'electronicSellervoice/queryXfList',
     });
-    this.onSearchFormSubmit();
+    this.handleSearchFormSubmit();
   }
-
-  onSearchFormSubmit = () => {
-    this.pagination = {
-      current: 1,
-      pageSize: 10,
-    };
-    this.queryForm = this.props.form.getFieldsValue();
-    // if (this.queryForm.create_date) {
-    //   const ranges = this.queryForm.create_date;
-    //   this.queryForm.start_date = ranges[0].unix();
-    //   this.queryForm.end_date = ranges[1].unix();
-    // } else {
-    //   this.queryForm.start_date = '';
-    //   this.queryForm.end_date = '';
-    // }
-    // delete this.queryForm.create_date;
-    this.queryListData(this.queryForm, this.pagination);
-  };
-
-  handleFormReset = () => {
-    this.props.form.resetFields();
-  };
 
   handleSearchFormSubmit = e => {
     if (e) {
@@ -76,7 +48,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
         return;
       }
       this.props.dispatch({
-        type: 'electronicInvoic/queryelemList',
+        type: 'electronicItem/queryelemList',
         params: values,
         pagination: {},
       });
@@ -89,7 +61,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
     form.resetFields();
 
     this.props.dispatch({
-      type: 'electronicInvoic/queryelemList',
+      type: 'electronicItem/queryelemList',
       params: {},
       pagination: {},
     });
@@ -101,15 +73,6 @@ class ElectronicInvoiceIssuance extends PureComponent {
   onTableChange = pagination => {
     const params = this.queryForm;
     this.queryListData(params, pagination);
-  };
-
-  onItemViewView = rec => {
-    this.setState({
-      showElemInfoFrame: {
-        visible: true,
-        data: rec,
-      },
-    });
   };
 
   onItemViewEdit = rec => {
@@ -130,7 +93,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
     // this.setState({ dataForm: false, dataFormID: '' });
     if (result && result === 'ok') {
       this.props.dispatch({
-        type: 'electronicInvoic/queryelemList',
+        type: 'electronicItem/queryelemList',
       });
     }
     this.clearSelectRows();
@@ -156,15 +119,6 @@ class ElectronicInvoiceIssuance extends PureComponent {
     });
   };
 
-  closeshowSubFrame = () => {
-    this.setState({
-      showElemInfoFrame: {
-        visible: false,
-        data: null,
-      },
-    });
-  };
-
   onItemDelClick = item => {
     Modal.confirm({
       title: `确定删除【${item.name}】配置项吗？`,
@@ -178,7 +132,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
   // 后台传值
   onDelOKClick = rec => {
     this.props.dispatch({
-      type: 'electronicInvoic/cancle',
+      type: 'electronicItem/cancle',
       recordId: rec,
     });
   };
@@ -204,7 +158,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
    */
   queryListData(params, pagination) {
     this.props.dispatch({
-      type: 'electronicInvoic/queryelemList',
+      type: 'electronicItem/queryelemList',
       params,
       pagination: {
         current: pagination.current,
@@ -264,7 +218,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
 
   render() {
     const {
-      electronicInvoic: {
+      electronicItem: {
         tableData: { list, pagination },
         loading,
       },
@@ -272,42 +226,25 @@ class ElectronicInvoiceIssuance extends PureComponent {
     const { selectedRowKeys, selectedRows } = this.state;
     const columns = [
       {
-        title: '名称',
+        title: '业务编号',
         dataIndex: 'name',
       },
       {
-        title: '税率',
+        title: '业务名称',
         dataIndex: 'rate',
       },
       {
-        title: '单位含税标志',
+        title: '园区',
         dataIndex: 'tax_included',
-        render: gender => {
-          switch (gender) {
-            case 1:
-              return <Tag color="blue">含税</Tag>;
-            case 2:
-              return <Tag color="blue">不含税</Tag>;
-            default:
-              return null;
-          }
-        },
       },
       {
-        title: '税收分类名称',
+        title: '销方',
         dataIndex: 'tax_classification',
-        render: val => {
-          return <DicShowNew root="ops$#dzfp" code={val} />;
-        },
       },
       {
-        title: '税收销售方名称',
+        title: '开票配置项',
         dataIndex: 'seller_name',
       },
-      // {
-      //   title: '编码',
-      //   dataIndex: 'code',
-      // },
     ];
     const paginationProps = {
       showSizeChanger: true,
@@ -324,7 +261,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="电子发票配置项">
+      <PageHeaderLayout title="电子发票业务配置项">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
@@ -333,14 +270,14 @@ class ElectronicInvoiceIssuance extends PureComponent {
                 新建
               </PButton>
               {selectedRows.length === 1 && [
-                <PButton
-                  key="see"
-                  code="see"
-                  icon="see"
-                  onClick={() => this.onItemViewView(selectedRows[0])}
-                >
-                  查看
-                </PButton>,
+                // <PButton
+                //   key="see"
+                //   code="see"
+                //   icon="see"
+                //   onClick={() => this.onItemViewView(selectedRows[0])}
+                // >
+                //   查看
+                // </PButton>,
                 <PButton
                   key="edit"
                   code="edit"
@@ -375,20 +312,14 @@ class ElectronicInvoiceIssuance extends PureComponent {
           </div>
         </Card>
         {this.state.elemInfoFrame.visible && (
-          <ElectronicInvoiceIssuanceAdd
+          <ElectronicItemAdd
             data={this.state.elemInfoFrame.data}
             mode={this.state.elemInfoFrame.mode}
             onElectronicCloseCallback={this.closeSubFrame}
-          />
-        )}
-        {this.state.showElemInfoFrame.visible && (
-          <ElectronicInvoiceIssuanceView
-            data={this.state.showElemInfoFrame.data}
-            onCloseCallback={this.closeshowSubFrame}
           />
         )}
       </PageHeaderLayout>
     );
   }
 }
-export default ElectronicInvoiceIssuance;
+export default ElectronicItem;

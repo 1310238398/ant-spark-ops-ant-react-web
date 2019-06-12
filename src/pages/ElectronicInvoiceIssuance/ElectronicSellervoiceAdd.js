@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Modal, Form, Input, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './ElectronicInvoiceIssuance.less';
-import ParkSelect from '@/components/ParkSelect';
+// import ParkSelect from '@/components/ParkSelect';
 // import { checkPhoneNum } from '@/utils/utils';
 // const { Option } = Select;
 const FormItem = Form.Item;
@@ -160,7 +160,7 @@ class ElectronicSellervoiceAdd extends PureComponent {
               </FormItem>
             </Col>
           </Row>
-          <Row gutter={5} type="flex" justify="space-between">
+          {/* <Row gutter={5} type="flex" justify="space-between">
             <Col span={24}>
               <Form.Item {...formItemLayoutOne} label="所属园区">
                 {getFieldDecorator('park_id', {
@@ -174,7 +174,7 @@ class ElectronicSellervoiceAdd extends PureComponent {
                 })(<ParkSelect />)}
               </Form.Item>
             </Col>
-          </Row>
+          </Row> */}
           {/* <Row gutter={5} type="flex" justify="space-between">
             <Col span={24}>
               <Form.Item {...formItemLayoutOne} label="编码">
