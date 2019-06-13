@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Form, Modal, Table, Row, Col, Button, Input, Select } from 'antd';
+import { Card, Form, Modal, Table, Row, Col, Button, Input } from 'antd';
 // import TableList from '../../components/TableList';
 // import FormItem from 'antd/lib/form/FormItem';
 import { connect } from 'dva';
@@ -11,7 +11,6 @@ import styles from './ElectronicInvoiceIssuance.less';
 
 @Form.create()
 @connect(state => ({
-  electronicSellervoice: state.electronicSellervoice,
   electronicItem: state.electronicItem,
 }))
 class ElectronicItem extends PureComponent {
@@ -31,9 +30,6 @@ class ElectronicItem extends PureComponent {
     // this.props.dispatch({
     //   type: 'electronicInvoic/queryElectronicstatus',
     // });
-    this.props.dispatch({
-      type: 'electronicSellervoice/queryXfList',
-    });
     this.handleSearchFormSubmit();
   }
 
@@ -171,7 +167,6 @@ class ElectronicItem extends PureComponent {
   renderSearchForm() {
     const {
       form: { getFieldDecorator },
-      electronicSellervoice: { xfList },
     } = this.props;
     return (
       <Form onSubmit={this.handleSearchFormSubmit} layout="inline">
@@ -180,25 +175,11 @@ class ElectronicItem extends PureComponent {
             <Form.Item label="园区">{getFieldDecorator('ParkID')(<ParkSelect />)}</Form.Item>
           </Col> */}
           <Col md={6} sm={24}>
-            <Form.Item label="名称">
-              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            <Form.Item label="编号">
+              {getFieldDecorator('code')(<Input placeholder="请输入" />)}
             </Form.Item>
           </Col>
-          <Col md={6} sm={24}>
-            <Form.Item label="销方">
-              {getFieldDecorator('tax_number')(
-                <Select placeholder="请选择">
-                  {xfList.map(item => {
-                    return (
-                      <Select.Option key={item.record_id} value={item.record_id}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
-                </Select>
-              )}
-            </Form.Item>
-          </Col>
+
           <Col md={6} sm={24}>
             <div style={{ overflow: 'hidden' }}>
               <span style={{ marginBottom: 24 }}>
@@ -227,23 +208,39 @@ class ElectronicItem extends PureComponent {
     const columns = [
       {
         title: '业务编号',
-        dataIndex: 'name',
+        dataIndex: 'code',
       },
       {
         title: '业务名称',
-        dataIndex: 'rate',
+        dataIndex: 'name',
       },
       {
         title: '园区',
-        dataIndex: 'tax_included',
+        dataIndex: 'park_name',
       },
       {
         title: '销方',
-        dataIndex: 'tax_classification',
+        dataIndex: 'seller_name',
       },
       {
         title: '开票配置项',
-        dataIndex: 'seller_name',
+        dataIndex: 'details',
+        render: value => {
+          let j = '';
+          if (value && value.length > 0) {
+            for (let i = 0; i < value.length; i += 1) {
+              j = `${j},${value[i].invoice_config_name}`;
+            }
+
+            if (j === ',') {
+              return '';
+            } else {
+              return j;
+            }
+          } else {
+            return '';
+          }
+        },
       },
     ];
     const paginationProps = {

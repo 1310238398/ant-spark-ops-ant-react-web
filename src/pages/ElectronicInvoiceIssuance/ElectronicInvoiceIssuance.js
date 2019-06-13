@@ -232,7 +232,7 @@ class ElectronicInvoiceIssuance extends PureComponent {
           </Col>
           <Col md={6} sm={24}>
             <Form.Item label="销方">
-              {getFieldDecorator('tax_number')(
+              {getFieldDecorator('seller_id')(
                 <Select placeholder="请选择">
                   {xfList.map(item => {
                     return (
@@ -304,10 +304,10 @@ class ElectronicInvoiceIssuance extends PureComponent {
         title: '税收销售方名称',
         dataIndex: 'seller_name',
       },
-      // {
-      //   title: '编码',
-      //   dataIndex: 'code',
-      // },
+      {
+        title: '编码',
+        dataIndex: 'code',
+      },
     ];
     const paginationProps = {
       showSizeChanger: true,

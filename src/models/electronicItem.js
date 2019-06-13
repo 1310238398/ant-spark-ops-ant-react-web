@@ -20,6 +20,7 @@ export default {
     },
     electrioncOne: {},
     xfList: [],
+    pzList: [],
   },
   effects: {
     // 请求字典表
@@ -74,7 +75,7 @@ export default {
           pagination = { ...pag };
         }
       }
-      const result = yield call(ElectronicInvoiceService.queryElectronicSellePageStore, {
+      const result = yield call(ElectronicInvoiceService.queryInvoiceBuConfigsList, {
         ...param,
         ...pagination,
       });
@@ -97,7 +98,7 @@ export default {
         return;
       }
       // 编辑数据
-      const response = yield call(ElectronicInvoiceService.EditSelleElem, params);
+      const response = yield call(ElectronicInvoiceService.EditInvoiceBuElem, params);
       if (response.record_id && response.record_id !== '') {
         message.success('保存成功');
         yield put({ type: 'queryelemList' });
@@ -108,24 +109,47 @@ export default {
         return;
       }
       // 插入数据
-      const response = yield call(ElectronicInvoiceService.insertSelleElem, params);
+      const response = yield call(ElectronicInvoiceService.insertInvoiceBuElem, params);
       if (response.record_id && response.record_id !== '') {
         message.success('新建成功');
         yield put({ type: 'queryelemList' });
       }
     },
     *cancle({ recordId }, { call, put }) {
-      const response = yield call(ElectronicInvoiceService.deleSelleOff, recordId);
+      const response = yield call(ElectronicInvoiceService.deleInvoiceBuOff, recordId);
       if (response.status === 'ok') {
         message.success('删除成功');
         yield put({ type: 'queryelemList' });
       }
     },
     *queryElectrioncOne({ params }, { call, put }) {
-      const response = yield call(ElectronicInvoiceService.queryElectrioncOne, params);
+      const response = yield call(ElectronicInvoiceService.queryInvoiceBuConfigsOne, params);
+      if (response && response.seller_id) {
+        yield put({
+          type: 'queryPZList',
+          params: { seller_id: response.seller_id },
+        });
+      }
+      const data = [];
+      if (response.details && response.details.length > 0) {
+        for (let i = 0; i < response.details.length; i += 1) {
+          data.push(response.details[i].invoice_config_id);
+        }
+      }
+      response.details = data;
       yield put({
         type: 'savaDataElectrionOne',
         payload: response,
+      });
+    },
+    *queryPZList({ params }, { call, put }) {
+      let param = { q: 'list' };
+      param = { ...param, ...params };
+      const response = yield call(ElectronicInvoiceService.queryPzlist, param);
+      const result = response.list || [];
+      yield put({
+        type: 'saveDataPzlist',
+        payload: result,
       });
     },
   },
@@ -156,6 +180,9 @@ export default {
     },
     saveXFlist(state, { payload }) {
       return { ...state, xfList: payload };
+    },
+    saveDataPzlist(state, { payload }) {
+      return { ...state, pzList: payload };
     },
   },
 };

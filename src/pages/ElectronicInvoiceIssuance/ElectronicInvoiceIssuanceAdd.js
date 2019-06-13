@@ -132,7 +132,7 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
           </Row>
 
           <Row gutter={10} type="flex" justify="space-between">
-            {/* <Col span={12}>
+            <Col span={12}>
               <Form.Item {...formItemLayout} label="编码">
                 {getFieldDecorator('code', {
                   initialValue: EletronicData.code,
@@ -144,7 +144,7 @@ class ElectronicInvoiceIssuanceAdd extends PureComponent {
                   ],
                 })(<Input placeholder="请输入" maxLength={100} />)}
               </Form.Item>
-            </Col> */}
+            </Col>
             <Col span={12}>
               <Form.Item {...formItemLayout} label="税收分类名称">
                 {getFieldDecorator('tax_classification', {

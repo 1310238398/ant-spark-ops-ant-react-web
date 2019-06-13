@@ -35,6 +35,14 @@ class ElectronicItemAdd extends PureComponent {
         if (this.props.mode === 1) {
           // 编辑
           formData.record_id = this.props.data.record_id;
+          const zdetails = [];
+          if (formData.details && formData.details.length > 0) {
+            for (let i = 0; i < formData.details.length; i += 1) {
+              zdetails.push({ invoice_config_id: formData.details[i] });
+            }
+          }
+          delete formData.details;
+          formData.details = zdetails;
           this.props.dispatch({
             type: 'electronicItem/EditElem',
             params: formData,
@@ -42,6 +50,15 @@ class ElectronicItemAdd extends PureComponent {
           onElectronicCloseCallback();
         } else if (this.props.mode === 2) {
           // 新建
+          const zdetails = [];
+          if (formData.details && formData.details.length > 0) {
+            for (let i = 0; i < formData.details.length; i += 1) {
+              zdetails.push({ invoice_config_id: formData.details[i] });
+            }
+          }
+          delete formData.details;
+          formData.details = zdetails;
+
           this.props.dispatch({
             type: 'electronicItem/insertElem',
             params: formData,
@@ -49,6 +66,13 @@ class ElectronicItemAdd extends PureComponent {
           onElectronicCloseCallback();
         }
       }
+    });
+  };
+
+  handleXfData = value => {
+    this.props.dispatch({
+      type: 'electronicItem/queryPZList',
+      params: { seller_id: value },
     });
   };
 
@@ -72,7 +96,7 @@ class ElectronicItemAdd extends PureComponent {
     const {
       mode,
       electronicSellervoice: { xfList },
-      electronicInvoic: { EletronicData },
+      electronicItem: { electrioncOne, pzList },
     } = this.props;
     const footerJsx = [
       <Button key="close" onClick={this.props.onElectronicCloseCallback}>
@@ -103,8 +127,8 @@ class ElectronicItemAdd extends PureComponent {
           <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
               <Form.Item {...formItemLayout} label="业务编号">
-                {getFieldDecorator('name', {
-                  initialValue: EletronicData.name,
+                {getFieldDecorator('code', {
+                  initialValue: electrioncOne.code,
                   rules: [
                     {
                       required: true,
@@ -116,8 +140,8 @@ class ElectronicItemAdd extends PureComponent {
             </Col>
             <Col span={12}>
               <Form.Item {...formItemLayout} label="业务名称">
-                {getFieldDecorator('rate', {
-                  initialValue: EletronicData.rate,
+                {getFieldDecorator('name', {
+                  initialValue: electrioncOne.rate,
                   rules: [
                     {
                       required: true,
@@ -133,7 +157,7 @@ class ElectronicItemAdd extends PureComponent {
             <Col span={12}>
               <Form.Item {...formItemLayout} label="所属园区">
                 {getFieldDecorator('park_id', {
-                  initialValue: EletronicData.park_id,
+                  initialValue: electrioncOne.park_id,
                   rules: [
                     {
                       required: true,
@@ -146,15 +170,15 @@ class ElectronicItemAdd extends PureComponent {
             <Col span={12}>
               <Form.Item {...formItemLayout} label="税收销售方名称">
                 {getFieldDecorator('seller_id', {
-                  initialValue: EletronicData.seller_id,
+                  initialValue: electrioncOne.seller_id,
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],
                 })(
-                  <Select placeholder="请选择">
+                  <Select placeholder="请选择" onChange={this.handleXfData}>
                     {xfList.map(item => {
                       return (
                         <Select.Option key={item.record_id} value={item.record_id}>
@@ -168,17 +192,17 @@ class ElectronicItemAdd extends PureComponent {
             </Col>
             <Col span={12}>
               <Form.Item {...formItemLayout} label="开票配置项">
-                {getFieldDecorator('tax_classification', {
-                  initialValue: EletronicData.tax_classification,
+                {getFieldDecorator('details', {
+                  initialValue: electrioncOne.details,
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],
                 })(
                   <Select placeholder="请选择" mode="multiple">
-                    {xfList.map(item => {
+                    {pzList.map(item => {
                       return (
                         <Select.Option key={item.record_id} value={item.record_id}>
                           {item.name}
