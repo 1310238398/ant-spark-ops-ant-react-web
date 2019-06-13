@@ -5,6 +5,7 @@ const buRouter = 'invoice_configs';
 
 const buRouterselles = 'invoice_seller_configs';
 
+const buRouterconfig = 'invoice_bu_configs';
 export default class ElectronicInvoiceService {
   static async queryElectronicstatus() {
     return request(
@@ -74,5 +75,38 @@ export default class ElectronicInvoiceService {
 
   static async queryElectrioncOne(params) {
     return request(`/v1/${buRouterselles}/${params}`);
+  }
+
+  static async queryInvoiceBuConfigsList(params) {
+    return request(`/v1/${buRouterconfig}/?${stringify(params)}`);
+  }
+
+  static async queryInvoiceBuConfigsOne(params) {
+    return request(`/v1/${buRouterconfig}/${params}`);
+  }
+
+  static async EditInvoiceBuElem(params) {
+    return request(`/v1/${buRouterconfig}/${params.record_id}`, {
+      method: 'PUT',
+      body: params,
+    });
+  }
+
+  static async insertInvoiceBuElem(params) {
+    return request(`/v1/${buRouterconfig}`, {
+      method: 'POST',
+      body: params,
+    });
+  }
+
+  static async deleInvoiceBuOff(register) {
+    return request(`/v1/${buRouterconfig}/${register}`, {
+      method: 'DELETE',
+      body: '',
+    });
+  }
+
+  static async queryPzlist(param) {
+    return request(`/v1/${buRouter}/?${stringify(param)}`);
   }
 }
