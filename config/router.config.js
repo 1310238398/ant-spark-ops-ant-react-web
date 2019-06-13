@@ -54,6 +54,21 @@ export default [
           },
         ],
       },
+      {
+        path: 'advertisement',
+        routes: [
+          {
+            name: '广告位管理',
+            path: '/advertisement/advertspace',
+            component: './Advertisement/AdvertSpace/AdvertSpace',
+          },
+          {
+            name: '广告管理',
+            path: '/advertisement/advertis',
+            component: './Advertisement/Advertis/Advertis',
+          },
+        ],
+      },
     ],
   },
   {
