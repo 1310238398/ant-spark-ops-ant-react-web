@@ -141,7 +141,7 @@ class ElectronicItemAdd extends PureComponent {
             <Col span={12}>
               <Form.Item {...formItemLayout} label="业务名称">
                 {getFieldDecorator('name', {
-                  initialValue: electrioncOne.rate,
+                  initialValue: electrioncOne.name,
                   rules: [
                     {
                       required: true,

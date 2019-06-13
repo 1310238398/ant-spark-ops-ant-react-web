@@ -223,13 +223,15 @@ class ElectronicItem extends PureComponent {
         dataIndex: 'seller_name',
       },
       {
-        title: '开票配置项',
+        title: '开票配置项+code',
         dataIndex: 'details',
         render: value => {
           let j = '';
           if (value && value.length > 0) {
             for (let i = 0; i < value.length; i += 1) {
-              j = `${j},${value[i].invoice_config_name}`;
+              if (j !== ',') {
+                j = `${j}[${value[i].invoice_config_name},${value[i].invoice_config_code}]`;
+              }
             }
 
             if (j === ',') {
