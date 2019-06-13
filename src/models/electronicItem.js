@@ -117,7 +117,7 @@ export default {
     },
     *cancle({ recordId }, { call, put }) {
       const response = yield call(ElectronicInvoiceService.deleInvoiceBuOff, recordId);
-      if (response.status === 'ok') {
+      if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'queryelemList' });
       }
@@ -132,8 +132,10 @@ export default {
       }
       const data = [];
       if (response.details && response.details.length > 0) {
-        for (let i = 0; i < response.details.length; i += 1) {
-          data.push(response.details[i].invoice_config_id);
+        for (let i = 0; i <= response.details.length; i += 1) {
+          if (response.details[i]) {
+            data.push(response.details[i].invoice_config_id);
+          }
         }
       }
       response.details = data;

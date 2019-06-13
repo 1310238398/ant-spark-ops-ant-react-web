@@ -228,17 +228,13 @@ class ElectronicItem extends PureComponent {
         render: value => {
           let j = '';
           if (value && value.length > 0) {
-            for (let i = 0; i < value.length; i += 1) {
-              if (j !== ',') {
+            for (let i = 0; i <= value.length; i += 1) {
+              if (value[i]) {
                 j = `${j}[${value[i].invoice_config_name},${value[i].invoice_config_code}]`;
               }
             }
 
-            if (j === ',') {
-              return '';
-            } else {
-              return j;
-            }
+            return j;
           } else {
             return '';
           }

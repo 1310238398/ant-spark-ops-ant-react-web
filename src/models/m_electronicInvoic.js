@@ -106,7 +106,7 @@ export default {
     },
     *cancle({ recordId }, { call, put }) {
       const response = yield call(ElectronicInvoiceService.deleOff, recordId);
-      if (response.status === 'ok') {
+      if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'queryelemList' });
       }
