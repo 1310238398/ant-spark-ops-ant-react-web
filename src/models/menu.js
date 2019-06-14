@@ -110,7 +110,25 @@ export default {
             payload: { record_id: payload.id },
           }),
         ];
-      } else {
+      }
+      if (payload.type === 'C') {
+        yield [
+          put({
+            type: 'saveFormTitle',
+            payload: '复制菜单',
+          }),
+          put({
+            type: 'saveFormID',
+            payload: payload.id,
+          }),
+          put({
+            type: 'fetchForm',
+            payload: { record_id: payload.id },
+          }),
+        ];
+      }
+
+      if (payload.type === 'A') {
         const search = yield select(state => state.menu.search);
         yield put({
           type: 'saveFormData',

@@ -4,7 +4,7 @@ import { Row, Col, Card, Form, Input, Button, Table, Radio, Modal, Layout, Tree 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import MenuCard from './MenuCard';
-
+import { formatDate } from '@/utils/utils';
 import styles from './MenuList.less';
 
 @connect(({ menu, loading }) => ({
@@ -132,6 +132,21 @@ class MenuList extends PureComponent {
     this.dispatch({
       type: 'menu/changeFormVisible',
       payload: false,
+    });
+  };
+
+  handleCopyClick = () => {
+    const { selectedRows } = this.state;
+    if (selectedRows.length === 0) {
+      return;
+    }
+    const item = selectedRows[0];
+    this.dispatch({
+      type: 'menu/loadForm',
+      payload: {
+        type: 'C',
+        id: item.record_id,
+      },
     });
   };
 
@@ -267,6 +282,11 @@ class MenuList extends PureComponent {
         title: '访问路由',
         dataIndex: 'router',
       },
+      {
+        title: '创建时间',
+        dataIndex: 'created_at',
+        render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+      },
     ];
 
     const paginationProps = {
@@ -343,6 +363,14 @@ class MenuList extends PureComponent {
                       onClick={() => this.handleEditClick()}
                     >
                       编辑
+                    </PButton>,
+                    <PButton
+                      key="copy"
+                      code="copy"
+                      icon="copy"
+                      onClick={() => this.handleCopyClick()}
+                    >
+                      复制
                     </PButton>,
                     <PButton
                       key="del"
