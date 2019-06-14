@@ -150,9 +150,9 @@ export default class RoleMenu extends PureComponent {
           rowSelection={{
             selectedRowKeys: dataSource.map(v => v.menu_id),
             onChange: this.handleSelectedRow,
-            getCheckboxProps: record => ({
-              disabled: record.hasChild,
-            }),
+            //   getCheckboxProps: record => ({
+            //     disabled: record.hasChild,
+            //   }),
           }}
           rowKey={record => record.record_id}
           components={components}
