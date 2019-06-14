@@ -34,6 +34,7 @@ class ElectronicSellervoiceView extends React.PureComponent {
           <Description term="地址">{data.address}</Description>
           <Description term="开户行及账号">{data.account}</Description>
           <Description term="开票人">{data.issuer}</Description>
+          <Description term="身份认证ID">{data.auth_id}</Description>
         </DescriptionList>
       </Modal>
     );
