@@ -192,6 +192,21 @@ class ElectronicSellervoiceAdd extends PureComponent {
           </Row> */}
           <Row>
             <Col span={24}>
+              <FormItem {...formItemLayoutOne} label="身份认证ID">
+                {getFieldDecorator('auth_id', {
+                  initialValue: electrioncOne.auth_id,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入',
+                    },
+                  ],
+                })(<Input placeholder="请输入" />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <FormItem {...formItemLayoutOne} label="开户行及账号">
                 {getFieldDecorator('account', {
                   initialValue: electrioncOne.account,
