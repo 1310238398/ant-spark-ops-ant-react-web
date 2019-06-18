@@ -49,7 +49,7 @@ export default {
   },
   proxy: {
     '/ops/': {
-      target: 'http://39.98.250.155:11088/',
+      target: 'http://127.0.0.1:11088/',
       changeOrigin: true,
     },
     '/s/': {

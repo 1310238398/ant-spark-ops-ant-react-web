@@ -100,6 +100,34 @@ class MenuCard extends PureComponent {
                 </Form.Item>
               </Col>
               <Col span={12}>
+                <Form.Item {...formItemLayout} label="菜单标题">
+                  {getFieldDecorator('title', {
+                    initialValue: formData.title,
+                    rules: [
+                      {
+                        required: false,
+                        message: '请输入菜单标题',
+                      },
+                    ],
+                  })(<Input placeholder="请输入" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item {...formItemLayout} label="菜单图标">
+                  {getFieldDecorator('icon', {
+                    initialValue: formData.icon,
+                    rules: [
+                      {
+                        required: false,
+                        message: '请输入菜单图标',
+                      },
+                    ],
+                  })(<MenuUpload />)}
+                </Form.Item>
+              </Col>
+              <Col span={12}>
                 <Form.Item {...formItemLayout} label="上级菜单">
                   {getFieldDecorator('parent_id', {
                     initialValue: formData.parent_id,
@@ -113,21 +141,6 @@ class MenuCard extends PureComponent {
                       placeholder="请选择"
                     />
                   )}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Form.Item {...formItemLayout2} label="菜单图标">
-                  {getFieldDecorator('icon', {
-                    initialValue: formData.icon,
-                    rules: [
-                      {
-                        required: false,
-                        message: '请输入菜单图标',
-                      },
-                    ],
-                  })(<MenuUpload />)}
                 </Form.Item>
               </Col>
             </Row>
