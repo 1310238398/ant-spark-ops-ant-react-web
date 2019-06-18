@@ -14,6 +14,15 @@ function checkAccessTokenExpires(expiresAt) {
   return 1;
 }
 
+export const authHeader = function getAuthHeader() {
+  const tokenInfo = store.getAccessToken();
+  if (!tokenInfo) {
+    return '';
+  }
+
+  return `${tokenInfo.token_type} ${tokenInfo.access_token}`;
+};
+
 async function getAccessToken() {
   const tokenInfo = store.getAccessToken();
   if (!tokenInfo) {

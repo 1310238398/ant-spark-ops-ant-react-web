@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Icon, Modal, Button } from 'antd';
+import {authHeader} from '@/utils/request';
 import styles from './PicturesWall.less';
 
 const defaction = '/ops/web/v1/files';
@@ -217,6 +218,9 @@ export default class PicturesWall extends React.Component {
       data: { bucket },
       name,
       disabled,
+      headers: {
+        Authorization: authHeader(),
+      },
     };
     if (accept) {
       uprop.accept = accept;
