@@ -92,11 +92,17 @@ export default async function request(url, options) {
     if (status === 504) {
       error.message = '未连接到服务器';
     } else if (data) {
-      const {
-        error: { message, code },
-      } = data;
-      error.message = message;
-      error.code = code;
+      if (data.error) {
+        const {
+          error: { message, code },
+        } = data;
+        error.message = message;
+        error.code = code;
+      } else {
+        const { message, code } = data;
+        error.message = message;
+        error.code = code;
+      }
     } else if (status >= 400 && status < 500) {
       error.message = '请求发生错误';
     }
