@@ -69,6 +69,17 @@ class RoleList extends PureComponent {
     });
   };
 
+  // 复制
+  handleCopyClick = item => {
+    this.dispatch({
+      type: 'role/loadForm',
+      payload: {
+        type: 'C',
+        id: item.record_id,
+      },
+    });
+  };
+
   handleTableSelectRow = (keys, rows) => {
     this.setState({
       selectedRowKeys: keys,
@@ -244,6 +255,13 @@ class RoleList extends PureComponent {
                   onClick={() => this.handleDelClick(selectedRows[0])}
                 >
                   删除
+                </PButton>,
+                <PButton
+                  key="copy"
+                  code="copy"
+                  onClick={() => this.handleCopyClick(selectedRows[0])}
+                >
+                  复制
                 </PButton>,
               ]}
             </div>
