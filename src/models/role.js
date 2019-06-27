@@ -96,6 +96,22 @@ export default {
           }),
         ];
       }
+      if (payload.type === 'C') {
+        yield [
+          put({
+            type: 'saveFormTitle',
+            payload: '复制角色',
+          }),
+          put({
+            type: 'saveFormID',
+            payload: payload.id,
+          }),
+          put({
+            type: 'fetchForm',
+            payload: { record_id: payload.id },
+          }),
+        ];
+      }
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(roleService.get, payload);
