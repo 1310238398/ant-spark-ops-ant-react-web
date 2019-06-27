@@ -289,13 +289,11 @@ class AdminLayout extends React.PureComponent {
               onClick={this.onToggleClick}
             />
             <div className={styles.right}>
-              {user.user_name ? (
+              {user.real_name ? (
                 <Dropdown overlay={menu}>
                   <span className={`${styles.action} ${styles.account}`}>
                     <Avatar size="small" className={styles.avatar} icon="user" />
-                    {user.real_name !== ''
-                      ? `${user.user_name}(${user.real_name})`
-                      : user.user_name}
+                    {user.real_name}
                   </span>
                 </Dropdown>
               ) : (
