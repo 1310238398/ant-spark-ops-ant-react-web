@@ -112,7 +112,7 @@ export default {
     *saveAdverSpace({ params }, { call, put }) {
       const param = { ...params.adSpace, ...params.list };
       const response = yield call(AdvertSpaceService.savePutInAdvertList, param);
-      if (response.record_id && response.record_id !== '') {
+      if (response.status === 'OK') {
         message.success('投放成功');
         yield put({ type: 'queryelemList' });
       }
