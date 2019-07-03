@@ -21,14 +21,6 @@ export default {
     xfList: [],
   },
   effects: {
-    *queryXfList(_, { call, put }) {
-      const param = {
-        q: 'list',
-      };
-      const result = yield call(AdvertSpaceService.queryXFlists, param);
-      const response = result.list || [];
-      yield put({ type: 'saveXFlist', payload: response });
-    },
     *queryelemList({ params, pagination }, { call, put, select }) {
       let param = {
         q: 'page',
@@ -61,7 +53,7 @@ export default {
           pagination = { ...pag };
         }
       }
-      const result = yield call(AdvertSpaceService.queryElectronicSellePageStore, {
+      const result = yield call(AdvertSpaceService.queryAdvertSpacePageStore, {
         ...param,
         ...pagination,
       });
@@ -103,17 +95,27 @@ export default {
     },
     *cancle({ recordId }, { call, put }) {
       const response = yield call(AdvertSpaceService.deleSelleOff, recordId);
-      if (response.status === 'ok') {
+      if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'queryelemList' });
+      } else {
+        message.error(response.message);
       }
     },
-    *queryElectrioncOne({ params }, { call, put }) {
-      const response = yield call(AdvertSpaceService.queryElectrioncOne, params);
+    *queryAdvertSpaceOne({ params }, { call, put }) {
+      const response = yield call(AdvertSpaceService.queryAdvertSpaceOne, params);
       yield put({
         type: 'savaDataElectrionOne',
         payload: response,
       });
+    },
+    *saveAdverSpace({ params }, { call, put }) {
+      const param = { ...params.adSpace, ...params.list };
+      const response = yield call(AdvertSpaceService.savePutInAdvertList, param);
+      if (response.record_id && response.record_id !== '') {
+        message.success('投放成功');
+        yield put({ type: 'queryelemList' });
+      }
     },
   },
   reducers: {

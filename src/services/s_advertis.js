@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const buRouter = 'invoice_configs';
+const buRouter = 'advertisings';
 
 const buRouterselles = 'invoice_seller_configs';
 
@@ -14,25 +14,30 @@ export default class AdvertisService {
     );
   }
 
-  static async queryElectronicPageStore(params) {
+  static async queryAdvertisPageStore(params) {
     return request(`/v1/${buRouter}?${stringify(params)}`);
   }
 
-  static async insertElem(params) {
+  // 广告部分页--查询全部
+  static async queryAdvertisNoPage(param) {
+    return request(`/v1/${buRouter}?${stringify(param)}`);
+  }
+
+  static async insertAdvertis(params) {
     return request(`/v1/${buRouter}`, {
       method: 'POST',
       body: params,
     });
   }
 
-  static async EditElem(params) {
+  static async EditAdvertis(params) {
     return request(`/v1/${buRouter}/${params.record_id}`, {
       method: 'PUT',
       body: params,
     });
   }
 
-  static async deleOff(register) {
+  static async deleAdvertisOff(register) {
     return request(`/v1/${buRouter}/${register}`, {
       method: 'DELETE',
       body: '',
@@ -68,7 +73,7 @@ export default class AdvertisService {
     });
   }
 
-  static async queryEletrioncOne(params) {
+  static async queryAdvertisOne(params) {
     return request(`/v1/${buRouter}/${params}`);
   }
 

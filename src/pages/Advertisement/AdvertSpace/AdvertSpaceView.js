@@ -24,10 +24,10 @@ class AdvertSpaceView extends React.PureComponent {
       >
         <DescriptionList size="large" col={1}>
           <Description term="名称">{data.name}</Description>
-          <Description term="选择广告">{data.advert_name}</Description>
+          {/* <Description term="选择广告">{data.advert_name}</Description> */}
           <Description term="所属园区">{data.park_name}</Description>
           <Description term="状态">{data.status === 1 ? '启用' : '停用'}</Description>
-          <Description term="点击次数">{data.click_number}</Description>
+          <Description term="点击次数">{data.click_number.toString()}</Description>
           <Description term="备注">{data.memo}</Description>
         </DescriptionList>
       </Modal>

@@ -4,8 +4,10 @@ import { connect } from 'dva';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import AdvertSpaceAdd from './AdvertSpaceAdd';
 import AdvertSpaceView from './AdvertSpaceView';
+import AdvertSpaceCS from './AdvertSpaceCS';
 import PButton from '@/components/PermButton';
 import styles from './AdvertSpace.less';
+import ParkSelect from '@/components/ParkSelect';
 
 @Form.create()
 @connect(state => ({
@@ -23,6 +25,10 @@ class AdvertSpace extends PureComponent {
       visible: false,
       data: null,
     },
+    showPutInFrame: {
+      visible: false,
+      data: null,
+    },
     selectedRowKeys: [],
     selectedRows: [],
   };
@@ -30,9 +36,6 @@ class AdvertSpace extends PureComponent {
   pagination = {};
 
   componentDidMount() {
-    this.props.dispatch({
-      type: 'advertSpaceService/queryXfList',
-    });
     this.handleSearchFormSubmit();
   }
 
@@ -116,6 +119,7 @@ class AdvertSpace extends PureComponent {
         data: null,
       },
     });
+    this.clearSelectRows();
   };
 
   onItemDelClick = item => {
@@ -154,6 +158,16 @@ class AdvertSpace extends PureComponent {
     });
   };
 
+  // 投放广告
+  onItemPutInClick = rec => {
+    this.setState({
+      showPutInFrame: {
+        visible: true,
+        data: rec,
+      },
+    });
+  };
+
   // 关闭查看页面
   closeshowSubFrame = () => {
     this.setState({
@@ -162,12 +176,31 @@ class AdvertSpace extends PureComponent {
         data: null,
       },
     });
+    this.clearSelectRows();
+  };
+
+  closeAdvertSubFrame = () => {
+    this.setState({
+      showPutInFrame: {
+        visible: false,
+        data: null,
+      },
+    });
+    this.clearSelectRows();
   };
 
   handleTableSelectRow = (keys, rows) => {
     this.setState({
       selectedRowKeys: keys,
       selectedRows: rows,
+    });
+  };
+
+  // 投放广告-传递数据
+  saveSelectAdvert = (list, adSpace) => {
+    this.props.dispatch({
+      type: 'advertSpace/saveAdverSpace',
+      params: { list, adSpace },
     });
   };
 
@@ -190,29 +223,33 @@ class AdvertSpace extends PureComponent {
   renderSearchForm() {
     const {
       form: { getFieldDecorator },
-      advertSpace: { xfList },
     } = this.props;
     return (
       <Form onSubmit={this.handleSearchFormSubmit} layout="inline">
         <Row gutter={16}>
           <Col md={6} sm={24}>
+            <Form.Item label="园区">{getFieldDecorator('park_id')(<ParkSelect />)}</Form.Item>
+          </Col>
+          <Col md={6} sm={24}>
             <Form.Item label="名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={16}>
           <Col md={6} sm={24}>
-            <Form.Item label="销方">
-              {getFieldDecorator('tax_number')(
+            <Form.Item label="广告状态">
+              {getFieldDecorator('status')(
                 <Select placeholder="请选择">
-                  {xfList.map(item => {
-                    return (
-                      <Select.Option key={item.record_id} value={item.record_id}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
+                  <Select.Option value={1}>启用</Select.Option>
+                  <Select.Option value={2}>停用</Select.Option>
                 </Select>
               )}
+            </Form.Item>
+          </Col>
+          <Col md={6} sm={24}>
+            <Form.Item label="广告位编号">
+              {getFieldDecorator('code')(<Input placeholder="请输入" />)}
             </Form.Item>
           </Col>
           <Col md={6} sm={24}>
@@ -246,12 +283,16 @@ class AdvertSpace extends PureComponent {
         dataIndex: 'name',
       },
       {
-        title: '选择广告',
-        dataIndex: 'advert_name',
+        title: '编号',
+        dataIndex: 'code',
       },
       {
         title: '所属园区',
-        dataIndex: 'park_id',
+        dataIndex: 'park_name',
+      },
+      {
+        title: '点击次数',
+        dataIndex: 'click_number',
       },
       {
         title: '状态',
@@ -307,14 +348,23 @@ class AdvertSpace extends PureComponent {
                 >
                   编辑
                 </PButton>,
+                selectedRows[0].status === 2 && (
+                  <PButton
+                    key="dele"
+                    code="dele"
+                    icon="delete"
+                    type="danger"
+                    onClick={() => this.onItemDelClick(selectedRows[0])}
+                  >
+                    删除
+                  </PButton>
+                ),
                 <PButton
-                  key="dele"
-                  code="dele"
-                  icon="delete"
-                  type="danger"
-                  onClick={() => this.onItemDelClick(selectedRows[0])}
+                  key="putIn"
+                  code="putIn"
+                  onClick={() => this.onItemPutInClick(selectedRows[0])}
                 >
-                  删除
+                  投放广告
                 </PButton>,
               ]}
             </div>
@@ -337,13 +387,20 @@ class AdvertSpace extends PureComponent {
           <AdvertSpaceAdd
             data={this.state.elemInfoFrame.data}
             mode={this.state.elemInfoFrame.mode}
-            onElectronicCloseCallback={this.closeSubFrame}
+            onAdvertSpaceCloseCallback={this.closeSubFrame}
           />
         )}
         {this.state.showElemInfoFrame.visible && (
           <AdvertSpaceView
             data={this.state.showElemInfoFrame.data}
             onCloseCallback={this.closeshowSubFrame}
+          />
+        )}
+        {this.state.showPutInFrame.visible && (
+          <AdvertSpaceCS
+            data={this.state.showPutInFrame.data}
+            onCloseCallback={this.closeAdvertSubFrame}
+            onSelectcommCallback={this.saveSelectAdvert}
           />
         )}
       </PageHeaderLayout>

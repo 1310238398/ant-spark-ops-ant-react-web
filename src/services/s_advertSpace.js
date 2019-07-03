@@ -1,9 +1,8 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const buRouter = 'invoice_configs';
-
-const buRouterselles = 'invoice_seller_configs';
+const buRouter = 'advertising_spaces';
+const putIn = 'advertising_deliveries';
 
 export default class AdvertSpaceService {
   static async queryElectronicstatus() {
@@ -14,7 +13,7 @@ export default class AdvertSpaceService {
     );
   }
 
-  static async queryElectronicPageStore(params) {
+  static async queryAdvertSpacePageStore(params) {
     return request(`/v1/${buRouter}?${stringify(params)}`);
   }
 
@@ -40,31 +39,30 @@ export default class AdvertSpaceService {
   }
 
   static async queryElectronicSellePageStore(params) {
-    return request(`/v1/${buRouterselles}?${stringify(params)}`);
+    return request(`/v1/${buRouter}?${stringify(params)}`);
   }
 
   static async queryXFlists(param) {
-    return request(`/v1/${buRouterselles}?${stringify(param)}`);
+    return request(`/v1/${buRouter}?${stringify(param)}`);
   }
 
   static async insertSelleElem(params) {
-    return request(`/v1/${buRouterselles}`, {
+    return request(`/v1/${buRouter}`, {
       method: 'POST',
       body: params,
     });
   }
 
   static async EditSelleElem(params) {
-    return request(`/v1/${buRouterselles}/${params.record_id}`, {
+    return request(`/v1/${buRouter}/${params.record_id}`, {
       method: 'PUT',
       body: params,
     });
   }
 
   static async deleSelleOff(register) {
-    return request(`/v1/${buRouterselles}/${register}`, {
+    return request(`/v1/${buRouter}/${register}`, {
       method: 'DELETE',
-      body: '',
     });
   }
 
@@ -72,7 +70,14 @@ export default class AdvertSpaceService {
     return request(`/v1/${buRouter}/${params}`);
   }
 
-  static async queryElectrioncOne(params) {
-    return request(`/v1/${buRouterselles}/${params}`);
+  static async queryAdvertSpaceOne(params) {
+    return request(`/v1/${buRouter}/${params}`);
+  }
+
+  static async savePutInAdvertList(params) {
+    return request(`/v1/${putIn}`, {
+      method: 'POST',
+      body: params,
+    });
   }
 }

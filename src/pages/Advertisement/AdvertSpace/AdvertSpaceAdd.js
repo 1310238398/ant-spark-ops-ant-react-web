@@ -4,7 +4,7 @@ import { Modal, Form, Input, Row, Col, Button, Radio } from 'antd';
 import { connect } from 'dva';
 import styles from './AdvertSpace.less';
 import ParkSelect from '@/components/ParkSelect';
-import MultipleSelect from '@/components/MultipleSelect';
+// import MultipleSelect from '@/components/MultipleSelect';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -17,17 +17,20 @@ class AdvertSpaceAdd extends PureComponent {
   componentDidMount() {
     if (this.props.data.record_id) {
       this.props.dispatch({
-        type: 'advertSpace/queryElectrioncOne',
+        type: 'advertSpace/queryAdvertSpaceOne',
         params: this.props.data.record_id,
       });
     }
   }
 
   onDataoffCallback = () => {
-    const { onElectronicCloseCallback } = this.props;
+    const {
+      onAdvertSpaceCloseCallback,
+      advertSpace: { formData: oldFormData },
+    } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const formData = { ...values };
+        const formData = { ...oldFormData, ...values };
 
         // 保存数据
         if (this.props.mode === 1) {
@@ -37,14 +40,14 @@ class AdvertSpaceAdd extends PureComponent {
             type: 'advertSpace/EditElem',
             params: formData,
           });
-          onElectronicCloseCallback();
+          onAdvertSpaceCloseCallback();
         } else if (this.props.mode === 2) {
           // 新建
           this.props.dispatch({
             type: 'advertSpace/insertElem',
             params: formData,
           });
-          onElectronicCloseCallback();
+          onAdvertSpaceCloseCallback();
         }
       }
     });
@@ -81,7 +84,7 @@ class AdvertSpaceAdd extends PureComponent {
       advertSpace: { formData },
     } = this.props;
     const footerJsx = [
-      <Button key="close" onClick={this.props.onElectronicCloseCallback}>
+      <Button key="close" onClick={this.props.onAdvertSpaceCloseCallback}>
         关闭
       </Button>,
       <Button key="unauth" onClick={this.onDataoffCallback}>
@@ -96,7 +99,7 @@ class AdvertSpaceAdd extends PureComponent {
         title={mode === 1 ? '广告位编辑' : '广告位新建'}
         destroyOnClose
         maskClosable={false}
-        onCancel={this.props.onElectronicCloseCallback}
+        onCancel={this.props.onAdvertSpaceCloseCallback}
         footer={footerJsx}
       >
         <Form>
@@ -117,6 +120,21 @@ class AdvertSpaceAdd extends PureComponent {
           </Row>
           <Row>
             <Col span={24}>
+              <FormItem {...formItemLayoutOne} label="编号">
+                {getFieldDecorator('code', {
+                  initialValue: formData.code,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入',
+                    },
+                  ],
+                })(<Input placeholder="请输入" maxLength={100} />)}
+              </FormItem>
+            </Col>
+          </Row>
+          {/* <Row>
+            <Col span={24}>
               <FormItem {...formItemLayoutOne} label="选择广告">
                 {getFieldDecorator('advert_name', {
                   initialValue: formData.advert_name,
@@ -129,7 +147,7 @@ class AdvertSpaceAdd extends PureComponent {
                 })(<MultipleSelect />)}
               </FormItem>
             </Col>
-          </Row>
+          </Row> */}
           <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
               <Form.Item {...formItemLayout} label="所属园区">
@@ -163,7 +181,7 @@ class AdvertSpaceAdd extends PureComponent {
               </FormItem>
             </Col>
           </Row>
-          <Row gutter={20} type="flex" justify="space-between">
+          {/* <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
               <FormItem {...formItemLayout} label="点击次数">
                 {getFieldDecorator('click_number', {
@@ -177,7 +195,7 @@ class AdvertSpaceAdd extends PureComponent {
                 })(<Input placeholder="请输入" maxLength={100} />)}
               </FormItem>
             </Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col span={24}>
               <FormItem {...formItemLayoutOne} label="备注">

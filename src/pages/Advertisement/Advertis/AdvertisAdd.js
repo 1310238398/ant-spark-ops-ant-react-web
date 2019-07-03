@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 // import { Modal, Tag, Button, Card,Table,Menu, Dropdown } from "antd";
-import { Modal, Form, Input, Row, Col, Button, Radio, DatePicker } from 'antd';
+import { Modal, Form, Input, Row, Col, Button, Radio, DatePicker, Tooltip } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
+import PicturesWall from '../../../components/PicturesWall/PicturesWall';
 import styles from './Advertis.less';
 
 const FormItem = Form.Item;
@@ -16,34 +17,40 @@ class AdvertisAdd extends PureComponent {
   componentDidMount() {
     if (this.props.data.record_id) {
       this.props.dispatch({
-        type: 'advertis/queryElectrioncOne',
+        type: 'advertis/queryAdvertisOne',
         params: this.props.data.record_id,
       });
     }
   }
 
   onDataoffCallback = () => {
-    const { onElectronicCloseCallback } = this.props;
+    const {
+      onAdvertisCloseCallback,
+      advertis: { formData: oldFormData },
+    } = this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const formData = { ...values };
-
+        const formData = { ...oldFormData, ...values };
+        if (formData.img && formData.img.length > 0) {
+          formData.img = formData.img.join(',');
+        }
+        formData.link = formData.link1 + encodeURIComponent(formData.link2);
         // 保存数据
         if (this.props.mode === 1) {
           // 编辑
           formData.record_id = this.props.data.record_id;
           this.props.dispatch({
-            type: 'advertis/EditElem',
+            type: 'advertis/EditAdvertis',
             params: formData,
           });
-          onElectronicCloseCallback();
+          onAdvertisCloseCallback();
         } else if (this.props.mode === 2) {
           // 新建
           this.props.dispatch({
-            type: 'advertis/insertElem',
+            type: 'advertis/insertAdvertis',
             params: formData,
           });
-          onElectronicCloseCallback();
+          onAdvertisCloseCallback();
         }
       }
     });
@@ -80,7 +87,7 @@ class AdvertisAdd extends PureComponent {
       advertis: { formData },
     } = this.props;
     const footerJsx = [
-      <Button key="close" onClick={this.props.onElectronicCloseCallback}>
+      <Button key="close" onClick={this.props.onAdvertisCloseCallback}>
         关闭
       </Button>,
       <Button key="unauth" onClick={this.onDataoffCallback}>
@@ -95,7 +102,7 @@ class AdvertisAdd extends PureComponent {
         title={mode === 1 ? '广告编辑' : '广告新建'}
         destroyOnClose
         maskClosable={false}
-        onCancel={this.props.onElectronicCloseCallback}
+        onCancel={this.props.onAdvertisCloseCallback}
         footer={footerJsx}
       >
         <Form>
@@ -116,7 +123,7 @@ class AdvertisAdd extends PureComponent {
           </Row>
           <Row>
             <Col span={24}>
-              <FormItem {...formItemLayoutOne} label="显示标题">
+              <FormItem {...formItemLayoutOne} label="标题">
                 {getFieldDecorator('title', {
                   initialValue: formData.title,
                   rules: [
@@ -131,24 +138,45 @@ class AdvertisAdd extends PureComponent {
           </Row>
           <Row>
             <Col span={24}>
-              <FormItem {...formItemLayoutOne} label="图片路径">
+              <FormItem {...formItemLayoutOne} label="图片">
                 {getFieldDecorator('img', {
-                  initialValue: formData.img,
+                  initialValue: formData.img ? [formData.img] : [],
                   rules: [
                     {
-                      required: true,
+                      required: false,
+                      message: '请上传',
+                    },
+                  ],
+                })(<PicturesWall num={1} bucket="park" listType="picture-card" />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={20} type="flex" justify="space-between">
+            <Col span={12}>
+              <FormItem
+                {...formItemLayout}
+                label={
+                  <span>
+                    跳转链接
+                    <Tooltip title="(内部，外部，原生)">(内部，外部，原生)</Tooltip>
+                  </span>
+                }
+              >
+                {getFieldDecorator('link1', {
+                  initialValue: formData.link1,
+                  rules: [
+                    {
+                      required: false,
                       message: '请选择',
                     },
                   ],
                 })(<Input placeholder="请输入" />)}
               </FormItem>
             </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <FormItem {...formItemLayoutOne} label="跳转链接">
-                {getFieldDecorator('link', {
-                  initialValue: formData.link,
+            <Col span={12} label="跳转链接（UII）">
+              <FormItem {...formItemLayout}>
+                {getFieldDecorator('link2', {
+                  initialValue: formData.link2,
                   rules: [
                     {
                       required: false,
@@ -168,7 +196,7 @@ class AdvertisAdd extends PureComponent {
                     : '',
                   rules: [
                     {
-                      required: true,
+                      required: false,
                       message: '请选择',
                     },
                   ],
@@ -189,7 +217,7 @@ class AdvertisAdd extends PureComponent {
                     : '',
                   rules: [
                     {
-                      required: true,
+                      required: false,
                       message: '请选择',
                     },
                   ],
@@ -228,7 +256,7 @@ class AdvertisAdd extends PureComponent {
                   initialValue: formData.status,
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],
@@ -238,21 +266,6 @@ class AdvertisAdd extends PureComponent {
                     <Radio value={2}>禁用</Radio>
                   </RadioGroup>
                 )}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row gutter={20} type="flex" justify="space-between">
-            <Col span={12}>
-              <FormItem {...formItemLayout} label="点击次数">
-                {getFieldDecorator('click_number', {
-                  initialValue: formData.click_number,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请选择',
-                    },
-                  ],
-                })(<Input placeholder="请输入" maxLength={100} />)}
               </FormItem>
             </Col>
           </Row>

@@ -8,6 +8,7 @@ export default {
     modalVisible: false,
     modalTitle: '',
     search: {},
+    searchPutIN: {},
     pagination: {},
     formData: {},
     formCallback() {},
@@ -19,16 +20,12 @@ export default {
       pagination: {},
     },
     xfList: [],
+    noAdvertisList: [],
+    PutinAdvertisList: [],
+    NoPutinAdvertisList: [],
+    putinAdvertisKeys: [],
   },
   effects: {
-    *queryXfList(_, { call, put }) {
-      const param = {
-        q: 'list',
-      };
-      const result = yield call(AdvertisService.queryXFlists, param);
-      const response = result.list || [];
-      yield put({ type: 'saveXFlist', payload: response });
-    },
     *queryelemList({ params, pagination }, { call, put, select }) {
       let param = {
         q: 'page',
@@ -61,7 +58,7 @@ export default {
           pagination = { ...pag };
         }
       }
-      const result = yield call(AdvertisService.queryElectronicSellePageStore, {
+      const result = yield call(AdvertisService.queryAdvertisPageStore, {
         ...param,
         ...pagination,
       });
@@ -70,7 +67,7 @@ export default {
         dataResult = result;
       }
       yield put({
-        type: 'setBlackStatueTotal',
+        type: 'setAdvertisTotal',
         payload: dataResult,
       });
       yield put({
@@ -79,45 +76,82 @@ export default {
       });
     },
 
-    *EditElem({ params }, { call, put }) {
+    *EditAdvertis({ params }, { call, put }) {
       if (!params) {
         return;
       }
       // 编辑数据
-      const response = yield call(AdvertisService.EditSelleElem, params);
+      const response = yield call(AdvertisService.EditAdvertis, params);
       if (response.record_id && response.record_id !== '') {
         message.success('保存成功');
         yield put({ type: 'queryelemList' });
       }
     },
-    *insertElem({ params }, { call, put }) {
+    *insertAdvertis({ params }, { call, put }) {
       if (!params) {
         return;
       }
       // 插入数据
-      const response = yield call(AdvertisService.insertSelleElem, params);
+      const response = yield call(AdvertisService.insertAdvertis, params);
       if (response.record_id && response.record_id !== '') {
         message.success('新建成功');
         yield put({ type: 'queryelemList' });
       }
     },
     *cancle({ recordId }, { call, put }) {
-      const response = yield call(AdvertisService.deleSelleOff, recordId);
-      if (response.status === 'ok') {
+      const response = yield call(AdvertisService.deleAdvertisOff, recordId);
+      if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'queryelemList' });
       }
     },
-    *queryElectrioncOne({ params }, { call, put }) {
-      const response = yield call(AdvertisService.queryElectrioncOne, params);
+    *queryAdvertisOne({ params }, { call, put }) {
+      const response = yield call(AdvertisService.queryAdvertisOne, params);
+      if (response) {
+        response.link1 = decodeURIComponent(response.link)
+          ? decodeURIComponent(response.link).substring(
+              0,
+              decodeURIComponent(response.link).indexOf('URL=') + 4
+            )
+          : '';
+        response.link2 = decodeURIComponent(response.link)
+          ? decodeURIComponent(response.link).substring(
+              decodeURIComponent(response.link).indexOf('URL=') + 4,
+              decodeURIComponent(response.link).length
+            )
+          : '';
+      }
       yield put({
         type: 'savaDataElectrionOne',
         payload: response,
       });
     },
+    // 获取全部广告位-不分页
+    *queryAdverList({ payload }, { call, put }) {
+      const param = {
+        q: 'list',
+      };
+      const resultall = yield call(AdvertisService.queryAdvertisNoPage, param);
+      let allData = resultall.list || [];
+      allData = allData.map(v => {
+        v.key = v.record_id;
+        return v;
+      });
+      yield put({ type: 'saveAdverListNopage', payload: allData });
+
+      const param2 = { ...param, ...payload };
+      const resultin = yield call(AdvertisService.queryAdvertisNoPage, param2);
+      const inData = resultin.list || [];
+      const inKeys = [];
+
+      for (let i = 0; i < inData.length; i += 1) {
+        inKeys.push(inData[i].record_id);
+      }
+      yield put({ type: 'savePutinAdvertisKeys', payload: inKeys });
+    },
   },
   reducers: {
-    setBlackStatueTotal(state, { payload }) {
+    setAdvertisTotal(state, { payload }) {
       return {
         ...state,
         tableData: {
@@ -128,6 +162,9 @@ export default {
     },
     saveSearch(state, { payload }) {
       return { ...state, search: payload };
+    },
+    saveSearchputIN(state, { payload }) {
+      return { ...state, searchPutIN: payload };
     },
     changeLoading(state, { payload }) {
       return { ...state, loading: payload };
@@ -143,6 +180,18 @@ export default {
     },
     saveXFlist(state, { payload }) {
       return { ...state, xfList: payload };
+    },
+    saveAdverListNopage(state, { payload }) {
+      return { ...state, noAdvertisList: payload };
+    },
+    savePutinAdvertisKeys(state, { payload }) {
+      return { ...state, putinAdvertisKeys: payload };
+    },
+    saveAdverListPutIn(state, { payload }) {
+      return { ...state, PutinAdvertisList: payload };
+    },
+    saveAdverListPutNotIn(state, { payload }) {
+      return { ...state, NoPutinAdvertisList: payload };
     },
   },
 };

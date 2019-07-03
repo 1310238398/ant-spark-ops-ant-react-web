@@ -31,9 +31,6 @@ class Advertis extends PureComponent {
   pagination = {};
 
   componentDidMount() {
-    this.props.dispatch({
-      type: 'advertisService/queryXfList',
-    });
     this.handleSearchFormSubmit();
   }
 
@@ -112,6 +109,7 @@ class Advertis extends PureComponent {
         data: null,
       },
     });
+    this.clearSelectRows();
   };
 
   onItemDelClick = item => {
@@ -158,6 +156,7 @@ class Advertis extends PureComponent {
         data: null,
       },
     });
+    this.clearSelectRows();
   };
 
   handleTableSelectRow = (keys, rows) => {
@@ -186,27 +185,38 @@ class Advertis extends PureComponent {
   renderSearchForm() {
     const {
       form: { getFieldDecorator },
-      advertis: { xfList },
     } = this.props;
     return (
       <Form onSubmit={this.handleSearchFormSubmit} layout="inline">
         <Row gutter={16}>
           <Col md={6} sm={24}>
-            <Form.Item label="名称">
+            <Form.Item label="广告名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </Form.Item>
           </Col>
           <Col md={6} sm={24}>
-            <Form.Item label="销方">
-              {getFieldDecorator('tax_number')(
+            <Form.Item label="广告标题">
+              {getFieldDecorator('title')(<Input placeholder="请输入" />)}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={6} sm={24}>
+            <Form.Item label="广告类型">
+              {getFieldDecorator('atype')(
                 <Select placeholder="请选择">
-                  {xfList.map(item => {
-                    return (
-                      <Select.Option key={item.record_id} value={item.record_id}>
-                        {item.name}
-                      </Select.Option>
-                    );
-                  })}
+                  <Select.Option value={1}>图</Select.Option>
+                  <Select.Option value={2}>图文</Select.Option>
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+          <Col md={6} sm={24}>
+            <Form.Item label="广告状态">
+              {getFieldDecorator('status')(
+                <Select placeholder="请选择">
+                  <Select.Option value={1}>启用</Select.Option>
+                  <Select.Option value={2}>停用</Select.Option>
                 </Select>
               )}
             </Form.Item>
@@ -242,13 +252,20 @@ class Advertis extends PureComponent {
         dataIndex: 'name',
       },
       {
-        title: '显示标题',
+        title: '标题',
         dataIndex: 'title',
       },
       {
-        title: '图片路径',
+        title: '图片',
         dataIndex: 'img',
+        render: val => {
+          return <img src={val} alt="" style={{ width: 60, height: 60 }} />;
+        },
       },
+      // {
+      //   title: '跳转链接',
+      //   dataIndex: 'link',
+      // },
       {
         title: '广告类型',
         dataIndex: 'atype',
@@ -286,6 +303,10 @@ class Advertis extends PureComponent {
               return null;
           }
         },
+      },
+      {
+        title: '点击次数',
+        dataIndex: 'click_number',
       },
     ];
     const paginationProps = {
@@ -357,7 +378,7 @@ class Advertis extends PureComponent {
           <AdvertisAdd
             data={this.state.elemInfoFrame.data}
             mode={this.state.elemInfoFrame.mode}
-            onElectronicCloseCallback={this.closeSubFrame}
+            onAdvertisCloseCallback={this.closeSubFrame}
           />
         )}
         {this.state.showElemInfoFrame.visible && (
