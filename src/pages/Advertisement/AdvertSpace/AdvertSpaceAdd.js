@@ -31,7 +31,9 @@ class AdvertSpaceAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const formData = { ...oldFormData, ...values };
-
+        if (formData.timer) {
+          formData.timer = parseInt(formData.timer, 10);
+        }
         // 保存数据
         if (this.props.mode === 1) {
           // 编辑
@@ -181,11 +183,11 @@ class AdvertSpaceAdd extends PureComponent {
               </FormItem>
             </Col>
           </Row>
-          {/* <Row gutter={20} type="flex" justify="space-between">
+          <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
-              <FormItem {...formItemLayout} label="点击次数">
-                {getFieldDecorator('click_number', {
-                  initialValue: formData.click_number,
+              <FormItem {...formItemLayout} label="倒计时">
+                {getFieldDecorator('timer', {
+                  initialValue: formData.timer,
                   rules: [
                     {
                       required: false,
@@ -195,7 +197,7 @@ class AdvertSpaceAdd extends PureComponent {
                 })(<Input placeholder="请输入" maxLength={100} />)}
               </FormItem>
             </Col>
-          </Row> */}
+          </Row>
           <Row>
             <Col span={24}>
               <FormItem {...formItemLayoutOne} label="备注">

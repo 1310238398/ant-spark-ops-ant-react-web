@@ -157,7 +157,7 @@ class AdvertisAdd extends PureComponent {
                 {...formItemLayout}
                 label={
                   <span>
-                    跳转链接
+                    跳转前缀
                     <Tooltip title="(内部，外部，原生)">(内部，外部，原生)</Tooltip>
                   </span>
                 }
@@ -173,8 +173,8 @@ class AdvertisAdd extends PureComponent {
                 })(<Input placeholder="请输入" />)}
               </FormItem>
             </Col>
-            <Col span={12} label="跳转链接（UII）">
-              <FormItem {...formItemLayout}>
+            <Col span={12}>
+              <FormItem {...formItemLayout} label="跳转链接（UII）">
                 {getFieldDecorator('link2', {
                   initialValue: formData.link2,
                   rules: [

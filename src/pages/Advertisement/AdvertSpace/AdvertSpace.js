@@ -308,6 +308,10 @@ class AdvertSpace extends PureComponent {
           }
         },
       },
+      {
+        title: '广告倒计时',
+        dataIndex: 'timer',
+      },
     ];
     const paginationProps = {
       showSizeChanger: true,
