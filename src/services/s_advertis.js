@@ -3,8 +3,6 @@ import request from '../utils/request';
 
 const buRouter = 'advertisings';
 
-const buRouterselles = 'invoice_seller_configs';
-
 export default class AdvertisService {
   static async queryElectronicstatus() {
     return request(
@@ -44,40 +42,7 @@ export default class AdvertisService {
     });
   }
 
-  static async queryElectronicSellePageStore(params) {
-    return request(`/v1/${buRouterselles}?${stringify(params)}`);
-  }
-
-  static async queryXFlists(param) {
-    return request(`/v1/${buRouterselles}?${stringify(param)}`);
-  }
-
-  static async insertSelleElem(params) {
-    return request(`/v1/${buRouterselles}`, {
-      method: 'POST',
-      body: params,
-    });
-  }
-
-  static async EditSelleElem(params) {
-    return request(`/v1/${buRouterselles}/${params.record_id}`, {
-      method: 'PUT',
-      body: params,
-    });
-  }
-
-  static async deleSelleOff(register) {
-    return request(`/v1/${buRouterselles}/${register}`, {
-      method: 'DELETE',
-      body: '',
-    });
-  }
-
   static async queryAdvertisOne(params) {
     return request(`/v1/${buRouter}/${params}`);
-  }
-
-  static async queryElectrioncOne(params) {
-    return request(`/v1/${buRouterselles}/${params}`);
   }
 }

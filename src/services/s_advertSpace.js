@@ -17,50 +17,21 @@ export default class AdvertSpaceService {
     return request(`/v1/${buRouter}?${stringify(params)}`);
   }
 
-  static async insertElem(params) {
+  static async insertAdvertSpace(params) {
     return request(`/v1/${buRouter}`, {
       method: 'POST',
       body: params,
     });
   }
 
-  static async EditElem(params) {
+  static async EditAdvertSpace(params) {
     return request(`/v1/${buRouter}/${params.record_id}`, {
       method: 'PUT',
       body: params,
     });
   }
 
-  static async deleOff(register) {
-    return request(`/v1/${buRouter}/${register}`, {
-      method: 'DELETE',
-      body: '',
-    });
-  }
-
-  static async queryElectronicSellePageStore(params) {
-    return request(`/v1/${buRouter}?${stringify(params)}`);
-  }
-
-  static async queryXFlists(param) {
-    return request(`/v1/${buRouter}?${stringify(param)}`);
-  }
-
-  static async insertSelleElem(params) {
-    return request(`/v1/${buRouter}`, {
-      method: 'POST',
-      body: params,
-    });
-  }
-
-  static async EditSelleElem(params) {
-    return request(`/v1/${buRouter}/${params.record_id}`, {
-      method: 'PUT',
-      body: params,
-    });
-  }
-
-  static async deleSelleOff(register) {
+  static async deleAdvertSpace(register) {
     return request(`/v1/${buRouter}/${register}`, {
       method: 'DELETE',
     });

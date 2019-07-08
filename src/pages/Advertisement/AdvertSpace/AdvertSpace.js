@@ -49,7 +49,7 @@ class AdvertSpace extends PureComponent {
         return;
       }
       this.props.dispatch({
-        type: 'advertSpace/queryelemList',
+        type: 'advertSpace/queryAdverspaceList',
         params: values,
         pagination: {},
       });
@@ -62,7 +62,7 @@ class AdvertSpace extends PureComponent {
     form.resetFields();
 
     this.props.dispatch({
-      type: 'advertSpace/queryelemList',
+      type: 'advertSpace/queryAdverspaceList',
       params: {},
       pagination: {},
     });
@@ -94,7 +94,7 @@ class AdvertSpace extends PureComponent {
     // this.setState({ dataForm: false, dataFormID: '' });
     if (result && result === 'ok') {
       this.props.dispatch({
-        type: 'advertSpace/queryelemList',
+        type: 'advertSpace/queryAdverspaceList',
       });
     }
     this.clearSelectRows();
@@ -209,7 +209,7 @@ class AdvertSpace extends PureComponent {
    */
   queryListData(params, pagination) {
     this.props.dispatch({
-      type: 'advertSpace/queryelemList',
+      type: 'advertSpace/queryAdverspaceList',
       params,
       pagination: {
         current: pagination.current,

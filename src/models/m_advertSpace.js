@@ -21,7 +21,7 @@ export default {
     xfList: [],
   },
   effects: {
-    *queryelemList({ params, pagination }, { call, put, select }) {
+    *queryAdverspaceList({ params, pagination }, { call, put, select }) {
       let param = {
         q: 'page',
       };
@@ -72,10 +72,10 @@ export default {
         return;
       }
       // 编辑数据
-      const response = yield call(AdvertSpaceService.EditSelleElem, params);
+      const response = yield call(AdvertSpaceService.EditAdvertSpace, params);
       if (response.record_id && response.record_id !== '') {
         message.success('保存成功');
-        yield put({ type: 'queryelemList' });
+        yield put({ type: 'queryAdverspaceList' });
       }
     },
     *insertElem({ params }, { call, put }) {
@@ -83,17 +83,17 @@ export default {
         return;
       }
       // 插入数据
-      const response = yield call(AdvertSpaceService.insertSelleElem, params);
+      const response = yield call(AdvertSpaceService.insertAdvertSpace, params);
       if (response.record_id && response.record_id !== '') {
         message.success('新建成功');
-        yield put({ type: 'queryelemList' });
+        yield put({ type: 'queryAdverspaceList' });
       }
     },
     *cancle({ recordId }, { call, put }) {
-      const response = yield call(AdvertSpaceService.deleSelleOff, recordId);
+      const response = yield call(AdvertSpaceService.deleAdvertSpaceOff, recordId);
       if (response.status === 'OK') {
         message.success('删除成功');
-        yield put({ type: 'queryelemList' });
+        yield put({ type: 'queryAdverspaceList' });
       } else {
         message.error(response.message);
       }
@@ -110,7 +110,7 @@ export default {
       const response = yield call(AdvertSpaceService.savePutInAdvertList, param);
       if (response.status === 'OK') {
         message.success('投放成功');
-        yield put({ type: 'queryelemList' });
+        yield put({ type: 'queryAdverspaceList' });
       }
     },
   },
