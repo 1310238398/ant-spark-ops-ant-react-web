@@ -76,40 +76,6 @@ class AdvertSpaceCS extends PureComponent {
     });
   }
 
-  handleResetFormClick = () => {
-    const { form } = this.props;
-    form.resetFields();
-
-    this.props.dispatch({
-      type: 'advertis/queryelemList',
-      params: {},
-      pagination: {},
-    });
-  };
-
-  /**
-   * 分页事件
-   */
-  onTableChange = pagination => {
-    const params = this.queryForm;
-    this.queryListData(params, pagination);
-  };
-
-  onBtnSearchClick = () => {
-    this.pagination = {
-      current: 1,
-      pageSize: 10,
-    };
-    this.queryListData(this.queryForm, this.pagination);
-  };
-
-  /**
-   * 清空按钮点击事件
-   */
-  onBtnClearClick = () => {
-    this.props.form.resetFields();
-  };
-
   onSelectcommCallback = () => {
     const selectdata = this.props.advertis.putinAdvertisKeys;
 
@@ -143,21 +109,6 @@ class AdvertSpaceCS extends PureComponent {
       payload: nextTargetKeys,
     });
   };
-
-  /**
-   * 查询数据
-   * @param {*} pagination
-   */
-  queryListData(params, pagination) {
-    this.props.dispatch({
-      type: 'advertis/queryelemList',
-      params,
-      pagination: {
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      },
-    });
-  }
 
   render() {
     const {
@@ -235,7 +186,7 @@ class AdvertSpaceCS extends PureComponent {
         <Card bordered={false}>
           <TableTransfer
             dataSource={noAdvertisList}
-            titles={['未投放广告列表', '已投放广告列表']}
+            titles={['未投放广告列表', '待投放广告列表']}
             targetKeys={putinAdvertisKeys}
             onChange={this.onChange}
             leftColumns={leftTableColumns}

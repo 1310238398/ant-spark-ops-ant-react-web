@@ -126,28 +126,31 @@ export default {
         payload: response,
       });
     },
-    // 获取全部广告位-不分页
+    // 获取全部广告-不分页
     *queryAdverList({ payload }, { call, put }) {
       const param = {
         q: 'list',
       };
-      const resultall = yield call(AdvertisService.queryAdvertisNoPage, param);
-      let allData = resultall.list || [];
-      allData = allData.map(v => {
-        v.key = v.record_id;
-        return v;
-      });
-      yield put({ type: 'saveAdverListNopage', payload: allData });
+      if (!payload) {
+        const resultall = yield call(AdvertisService.queryAdvertisNoPage, param);
+        let allData = resultall.list || [];
+        allData = allData.map(v => {
+          v.key = v.record_id;
+          return v;
+        });
+        yield put({ type: 'saveAdverListNopage', payload: allData });
+      } else {
+        const param2 = { ...param, ...payload };
+        const resultin = yield call(AdvertisService.queryAdvertisNoPage, param2);
+        const inData = resultin.list || [];
+        const inKeys = [];
 
-      const param2 = { ...param, ...payload };
-      const resultin = yield call(AdvertisService.queryAdvertisNoPage, param2);
-      const inData = resultin.list || [];
-      const inKeys = [];
+        for (let i = 0; i < inData.length; i += 1) {
+          inKeys.push(inData[i].record_id);
+        }
 
-      for (let i = 0; i < inData.length; i += 1) {
-        inKeys.push(inData[i].record_id);
+        yield put({ type: 'savePutinAdvertisKeys', payload: inKeys });
       }
-      yield put({ type: 'savePutinAdvertisKeys', payload: inKeys });
     },
   },
   reducers: {
