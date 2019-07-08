@@ -137,6 +137,34 @@ class ParkCard extends PureComponent {
           </Row>
           <Row>
             <Col span={12}>
+              <Form.Item {...formItemLayout} label="容积率">
+                {getFieldDecorator('volume_rate', {
+                  initialValue: formData.volume_rate,
+                  rules: [
+                    {
+                      required: false,
+                      message: '请输入容积率',
+                    },
+                  ],
+                })(<Input placeholder="请输入容积率" />)}
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="绿化率">
+                {getFieldDecorator('greening_rate', {
+                  initialValue: formData.greening_rate,
+                  rules: [
+                    {
+                      required: false,
+                      message: '请输入绿化率',
+                    },
+                  ],
+                })(<Input placeholder="请输入绿化率" />)}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
               <Form.Item {...formItemLayout} label="产权所有人">
                 {getFieldDecorator('property_owner', {
                   initialValue: formData.property_owner,
