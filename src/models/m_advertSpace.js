@@ -37,7 +37,7 @@ export default {
           payload: param,
         });
       } else {
-        const search = yield select(state => state.electronicSellervoice.search);
+        const search = yield select(state => state.advertSpace.search);
         if (search) {
           param = { ...param, ...search };
         }
@@ -48,7 +48,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const pag = yield select(state => state.electronicSellervoice.pagination);
+        const pag = yield select(state => state.advertSpace.pagination);
         if (pag) {
           pagination = { ...pag };
         }
@@ -57,13 +57,9 @@ export default {
         ...param,
         ...pagination,
       });
-      let dataResult = { list: [], pagination: {} };
-      if (result.list) {
-        dataResult = result;
-      }
       yield put({
         type: 'setBlackStatueTotal',
-        payload: dataResult,
+        payload: result,
       });
       yield put({
         type: 'changeLoading',

@@ -11,7 +11,6 @@ import ParkSelect from '@/components/ParkSelect';
 
 @Form.create()
 @connect(state => ({
-  advertSpaceService: state.advertSpaceService,
   advertSpace: state.advertSpace,
 }))
 class AdvertSpace extends PureComponent {

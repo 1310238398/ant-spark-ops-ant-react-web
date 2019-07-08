@@ -42,7 +42,7 @@ export default {
           payload: param,
         });
       } else {
-        const search = yield select(state => state.electronicSellervoice.search);
+        const search = yield select(state => state.advertis.search);
         if (search) {
           param = { ...param, ...search };
         }
@@ -53,7 +53,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const pag = yield select(state => state.electronicSellervoice.pagination);
+        const pag = yield select(state => state.advertis.pagination);
         if (pag) {
           pagination = { ...pag };
         }
