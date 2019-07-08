@@ -1,8 +1,8 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const buRouter = 'advertising_spaces';
-const putIn = 'advertising_deliveries';
+const buRouter = 'ad_spaces';
+const putIn = 'ad_deliveries';
 
 export default class AdvertSpaceService {
   static async queryElectronicstatus() {
