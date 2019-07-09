@@ -157,6 +157,9 @@ export default {
         params.record_id = yield select(state => state.menu.formID);
         response = yield call(menuService.update, params);
       } else {
+        if (formType === 'C') {
+          params.related_id = yield select(state => state.menu.formID);
+        }
         response = yield call(menuService.create, params);
       }
       if (response.record_id && response.record_id !== '') {

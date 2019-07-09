@@ -71,9 +71,16 @@ class MenuList extends PureComponent {
   };
 
   onTableSelectRow = (selectedRowKeys, selectedRows) => {
+    let keys = selectedRowKeys;
+    let rows = selectedRows;
+    if (selectedRowKeys.length > 1) {
+      keys = [selectedRowKeys[selectedRowKeys.length-1]];
+      rows = [selectedRows[selectedRowKeys.length-1]];
+    }
+
     this.setState({
-      selectedRowKeys,
-      selectedRows,
+      selectedRowKeys: keys,
+      selectedRows: rows,
     });
   };
 
