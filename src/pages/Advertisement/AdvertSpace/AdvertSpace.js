@@ -201,6 +201,7 @@ class AdvertSpace extends PureComponent {
       type: 'advertSpace/saveAdverSpace',
       params: { list, adSpace },
     });
+    this.closeAdvertSubFrame();
   };
 
   /**
