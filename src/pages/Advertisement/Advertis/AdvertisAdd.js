@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 // import { Modal, Tag, Button, Card,Table,Menu, Dropdown } from "antd";
-import { Modal, Form, Input, Row, Col, Button, Radio, DatePicker, Tooltip } from 'antd';
+import { Modal, Form, Input, Row, Col, Button, Radio, DatePicker, Tooltip, Select } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import PicturesWall from '../../../components/PicturesWall/PicturesWall';
@@ -8,6 +8,7 @@ import styles from './Advertis.less';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const { Option } = Select;
 @Form.create()
 @connect(state => ({
   advertis: state.advertis,
@@ -34,7 +35,12 @@ class AdvertisAdd extends PureComponent {
         if (formData.img && formData.img.length > 0) {
           formData.img = formData.img.join(',');
         }
-        formData.link = formData.link1 + encodeURIComponent(formData.link2);
+        if (formData.link1 && formData.link2) {
+          formData.link = formData.link1 + encodeURIComponent(formData.link2);
+        } else {
+          formData.link = '';
+        }
+
         // 保存数据
         if (this.props.mode === 1) {
           // 编辑
@@ -170,7 +176,13 @@ class AdvertisAdd extends PureComponent {
                       message: '请选择',
                     },
                   ],
-                })(<Input placeholder="请输入" />)}
+                })(
+                  <Select>
+                    <Option value="jgt://jgtwebview/open?URL=">应用内部的</Option>
+                    <Option value="jgt://h5app/open?URL=">应用外部的(H5)</Option>
+                    <Option value="jgt://jgtnative/open?URL=">应用原生</Option>
+                  </Select>
+                )}
               </FormItem>
             </Col>
             <Col span={12}>
@@ -196,7 +208,7 @@ class AdvertisAdd extends PureComponent {
                     : '',
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],
@@ -217,7 +229,7 @@ class AdvertisAdd extends PureComponent {
                     : '',
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],

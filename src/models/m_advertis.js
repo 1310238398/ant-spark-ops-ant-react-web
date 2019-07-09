@@ -107,7 +107,7 @@ export default {
     },
     *queryAdvertisOne({ params }, { call, put }) {
       const response = yield call(AdvertisService.queryAdvertisOne, params);
-      if (response) {
+      if (response.link && response.link !== 'undefinedundefined') {
         response.link1 = decodeURIComponent(response.link)
           ? decodeURIComponent(response.link).substring(
               0,
