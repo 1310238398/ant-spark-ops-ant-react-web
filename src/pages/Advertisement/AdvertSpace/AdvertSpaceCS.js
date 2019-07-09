@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Modal, Tag, Button, Card, Table, Form, Transfer, message } from 'antd';
+import { Modal, Tag, Button, Card, Table, Form, Transfer } from 'antd';
 import { connect } from 'dva';
 import difference from 'lodash/difference';
 import styles from './AdvertSpace.less';
@@ -79,28 +79,32 @@ class AdvertSpaceCS extends PureComponent {
   onSelectcommCallback = () => {
     const selectdata = this.props.advertis.putinAdvertisKeys;
 
-    if (selectdata && selectdata.length > 0) {
-      const selectAdvertisList = [];
-      selectdata.map(v => {
-        selectAdvertisList.push({ DeliveryAdvertisingID: v });
-        return selectAdvertisList;
-      });
-      const listdata = { delivery_advertising_ids: selectAdvertisList };
-      const spaceId = { space_id: this.props.data.record_id };
-      const { onSelectcommCallback } = this.props;
-      Modal.confirm({
-        title: '操作确认',
-        content: '确定要加入此广告吗？',
-        okType: 'danger',
-        okText: '确定',
-        cancelText: '取消',
-        onOk() {
-          onSelectcommCallback(listdata, spaceId);
-        },
-      });
-    } else {
-      message.error('请至少选择一项广告');
-    }
+    // if (selectdata && selectdata.length > 0) {
+    const conten =
+      selectdata && selectdata.length > 0
+        ? '确定要加入此广告吗？'
+        : '此广告位将暂时不进行投放广告？';
+    const selectAdvertisList = [];
+    selectdata.map(v => {
+      selectAdvertisList.push({ DeliveryAdvertisingID: v });
+      return selectAdvertisList;
+    });
+    const listdata = { delivery_advertising_ids: selectAdvertisList };
+    const spaceId = { space_id: this.props.data.record_id };
+    const { onSelectcommCallback } = this.props;
+    Modal.confirm({
+      title: '操作确认',
+      content: conten,
+      okType: 'danger',
+      okText: '确定',
+      cancelText: '取消',
+      onOk() {
+        onSelectcommCallback(listdata, spaceId);
+      },
+    });
+    // } else {
+    //   message.error('请至少选择一项广告');
+    // }
   };
 
   onChange = nextTargetKeys => {
