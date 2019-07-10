@@ -183,9 +183,9 @@ class AdvertisAdd extends PureComponent {
                   ],
                 })(
                   <Select>
-                    <Option value="jgt://jgtwebview/open?URL=">应用内部的</Option>
-                    <Option value="jgt://h5app/open?URL=">应用外部的</Option>
-                    <Option value="jgt://jgtnative/open?URL=">应用原生</Option>
+                    <Option value="jgt://jgtwebview/open?URL=">应用内部的(jgtwebview)</Option>
+                    <Option value="jgt://h5app/open?URL=">应用外部的(h5app)</Option>
+                    <Option value="jgt://jgtnative/open?URL=">应用原生(jgtnative)</Option>
                   </Select>
                 )}
               </FormItem>
