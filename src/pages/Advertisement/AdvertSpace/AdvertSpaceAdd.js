@@ -20,6 +20,11 @@ class AdvertSpaceAdd extends PureComponent {
         type: 'advertSpace/queryAdvertSpaceOne',
         params: this.props.data.record_id,
       });
+    } else {
+      this.props.dispatch({
+        type: 'advertSpace/savaDataElectrionOne',
+        payload: {},
+      });
     }
   }
 

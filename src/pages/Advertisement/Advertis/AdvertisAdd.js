@@ -21,6 +21,11 @@ class AdvertisAdd extends PureComponent {
         type: 'advertis/queryAdvertisOne',
         params: this.props.data.record_id,
       });
+    } else {
+      this.props.dispatch({
+        type: 'advertis/savaDataElectrionOne',
+        payload: {},
+      });
     }
   }
 
