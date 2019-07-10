@@ -190,7 +190,7 @@ class AdvertSpaceAdd extends PureComponent {
           </Row>
           <Row gutter={20} type="flex" justify="space-between">
             <Col span={12}>
-              <FormItem {...formItemLayout} label="倒计时">
+              <FormItem {...formItemLayout} label="倒计时(单位：s)">
                 {getFieldDecorator('timer', {
                   initialValue: formData.timer,
                   rules: [
