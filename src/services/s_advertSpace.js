@@ -31,7 +31,7 @@ export default class AdvertSpaceService {
     });
   }
 
-  static async deleAdvertSpace(register) {
+  static async deleAdvertSpaceOff(register) {
     return request(`/v1/${buRouter}/${register}`, {
       method: 'DELETE',
     });

@@ -137,6 +137,7 @@ class AdvertSpace extends PureComponent {
       type: 'advertSpace/cancle',
       recordId: rec,
     });
+    this.clearSelectRows();
   };
 
   clearSelectRows = () => {
