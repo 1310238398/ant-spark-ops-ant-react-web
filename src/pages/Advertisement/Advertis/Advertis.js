@@ -250,10 +250,12 @@ class Advertis extends PureComponent {
       {
         title: '名称',
         dataIndex: 'name',
+        width: 100,
       },
       {
         title: '标题',
         dataIndex: 'title',
+        width: 150,
       },
       {
         title: '图片',
@@ -269,6 +271,7 @@ class Advertis extends PureComponent {
       {
         title: '广告类型',
         dataIndex: 'atype',
+        width: 100,
         render: gender => {
           switch (gender) {
             case 1:
@@ -283,11 +286,13 @@ class Advertis extends PureComponent {
       {
         title: '投放开始时间',
         dataIndex: 'delivery_start_time',
+        width: 120,
         render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
         title: '投放结束时间',
         dataIndex: 'delivery_end_time',
+        width: 120,
         render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
@@ -307,6 +312,7 @@ class Advertis extends PureComponent {
       {
         title: '点击次数',
         dataIndex: 'click_number',
+        width: 120,
       },
     ];
     const paginationProps = {
@@ -366,6 +372,7 @@ class Advertis extends PureComponent {
                   onChange: this.handleTableSelectRow,
                 }}
                 loading={loading}
+                scroll={{ x: 1000 }}
                 dataSource={list}
                 columns={columns}
                 onChange={this.onTableChange}
