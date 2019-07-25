@@ -154,7 +154,7 @@ class AdvertisAdd extends PureComponent {
                   initialValue: formData.img ? [formData.img] : [],
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请上传',
                     },
                   ],
@@ -255,7 +255,7 @@ class AdvertisAdd extends PureComponent {
                   initialValue: formData.atype,
                   rules: [
                     {
-                      required: false,
+                      required: true,
                       message: '请选择',
                     },
                   ],
