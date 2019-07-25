@@ -260,7 +260,7 @@ class AdvertisAdd extends PureComponent {
                     },
                   ],
                 })(
-                  <RadioGroup value={formData.atype}>
+                  <RadioGroup value={formData.atype?formData.atype:1}>
                     <Radio value={1}>图</Radio>
                     <Radio value={2}>图文</Radio>
                   </RadioGroup>
