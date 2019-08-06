@@ -10,7 +10,7 @@ import GlobalFooter from '@/components/GlobalFooter';
 import CopyRight from '@/components/CopyRight';
 import UpdatePasswordDialog from '@/components/UpdatePasswordDialog';
 import styles from './AdminLayout.less';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo_ytc@2x.png';
 import GetGlobalContext from '@/utils/context';
 
 const { Header, Sider, Content } = Layout;
