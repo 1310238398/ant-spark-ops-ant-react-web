@@ -45,7 +45,7 @@ class AdvertisAdd extends PureComponent {
         } else {
           formData.link = '';
         }
-
+      
         // 保存数据
         if (this.props.mode === 1) {
           // 编辑
@@ -97,6 +97,7 @@ class AdvertisAdd extends PureComponent {
       mode,
       advertis: { formData },
     } = this.props;
+  
     const footerJsx = [
       <Button key="close" onClick={this.props.onAdvertisCloseCallback}>
         关闭
@@ -252,7 +253,7 @@ class AdvertisAdd extends PureComponent {
             <Col span={12}>
               <FormItem {...formItemLayout} label="广告类型">
                 {getFieldDecorator('atype', {
-                  initialValue: formData.atype,
+                  initialValue: formData.atype?formData.atype:1,
                   rules: [
                     {
                       required: true,
@@ -260,7 +261,7 @@ class AdvertisAdd extends PureComponent {
                     },
                   ],
                 })(
-                  <RadioGroup value={formData.atype?formData.atype:1}>
+                  <RadioGroup value={formData.atype}>
                     <Radio value={1}>图</Radio>
                     <Radio value={2}>图文</Radio>
                   </RadioGroup>
@@ -270,7 +271,7 @@ class AdvertisAdd extends PureComponent {
             <Col span={12}>
               <FormItem {...formItemLayout} label="状态">
                 {getFieldDecorator('status', {
-                  initialValue: formData.status,
+                  initialValue: formData.status?formData.status:1,
                   rules: [
                     {
                       required: true,
