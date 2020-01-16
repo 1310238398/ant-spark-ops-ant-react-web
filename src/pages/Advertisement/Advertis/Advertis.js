@@ -128,6 +128,7 @@ class Advertis extends PureComponent {
       type: 'advertis/cancle',
       recordId: rec,
     });
+    this.clearSelectRows();
   };
 
   clearSelectRows = () => {

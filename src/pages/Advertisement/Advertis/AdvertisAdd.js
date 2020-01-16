@@ -4,6 +4,8 @@ import { Modal, Form, Input, Row, Col, Button, Radio, DatePicker, Tooltip, Selec
 import { connect } from 'dva';
 import moment from 'moment';
 import PicturesWall from '../../../components/PicturesWall/PicturesWall';
+import Audience from './Audience';
+import SpecificationTag from './SpecificationTag';
 import styles from './Advertis.less';
 
 const FormItem = Form.Item;
@@ -45,7 +47,7 @@ class AdvertisAdd extends PureComponent {
         } else {
           formData.link = '';
         }
-      
+
         // 保存数据
         if (this.props.mode === 1) {
           // 编辑
@@ -66,6 +68,65 @@ class AdvertisAdd extends PureComponent {
       }
     });
   };
+
+  // 受众群体
+  onAddClick=()=>{
+    this.props.dispatch({
+      type: 'advertis/changeFormVisibleStock',
+      payload: true,
+    });
+  }
+
+  handleDataFormSubmit = addlist => {
+    const { form } = this.props;
+
+    let ranges = form.getFieldValue('ranges');
+
+    let exists = false;
+    
+    if(addlist){
+      for (let i = 0; i < ranges.length; i += 1) {
+        if (ranges[i].bu_value === addlist.bu_value) {
+          exists = true;
+          break;
+        }
+      }
+    }
+  
+    if (!exists) {
+      if(JSON.stringify(addlist) !== "{}"){
+        ranges = [...ranges, addlist];
+      }
+      
+     
+    }
+   
+    form.setFieldsValue({ ranges });
+    this.handleDataFormCancel();
+  };
+
+  handleDataFormCancel = () => {
+    this.props.dispatch({
+      type: 'advertis/changeFormVisibleStock',
+      payload: false,
+    });
+  };
+
+  renderDataForm() {
+    const {
+      advertis: { formVisibleStock },
+    } = this.props;
+    return (
+      <Audience
+        visible={formVisibleStock}
+        onCancel={this.handleDataFormCancel}
+        onSubmit={this.handleDataFormSubmit}
+        closeBack={this.onProEditClose}
+      />
+    );
+  }
+
+
 
   /**
    * 界面渲染
@@ -97,7 +158,7 @@ class AdvertisAdd extends PureComponent {
       mode,
       advertis: { formData },
     } = this.props;
-  
+
     const footerJsx = [
       <Button key="close" onClick={this.props.onAdvertisCloseCallback}>
         关闭
@@ -253,7 +314,7 @@ class AdvertisAdd extends PureComponent {
             <Col span={12}>
               <FormItem {...formItemLayout} label="广告类型">
                 {getFieldDecorator('atype', {
-                  initialValue: formData.atype?formData.atype:1,
+                  initialValue: formData.atype ? formData.atype : 1,
                   rules: [
                     {
                       required: true,
@@ -271,7 +332,7 @@ class AdvertisAdd extends PureComponent {
             <Col span={12}>
               <FormItem {...formItemLayout} label="状态">
                 {getFieldDecorator('status', {
-                  initialValue: formData.status?formData.status:1,
+                  initialValue: formData.status ? formData.status : 1,
                   rules: [
                     {
                       required: true,
@@ -289,6 +350,41 @@ class AdvertisAdd extends PureComponent {
           </Row>
           <Row>
             <Col span={24}>
+              <FormItem {...formItemLayoutOne} label="受众群体">
+                {getFieldDecorator('memos', {
+                  // initialValue: formData.memo,
+                  // rules: [
+                  //   {
+                  //     required: false,
+                  //     message: '请选择',
+                  //   },s
+                  // ],
+                })(
+                  <Button icon="plus" type="primary" onClick={() => this.onAddClick()}>
+                    新增受众群体
+                  </Button>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Form.Item {...formItemLayoutOne} label="受众群体列表">
+                {getFieldDecorator('ranges', {
+                  initialValue: formData.ranges || [],
+                  rules: [
+                    {
+                      required: false,
+                      message: '请选择',
+                    },
+                  ],
+                })(<SpecificationTag />)}
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={24}>
               <FormItem {...formItemLayoutOne} label="备注">
                 {getFieldDecorator('memo', {
                   initialValue: formData.memo,
@@ -302,6 +398,7 @@ class AdvertisAdd extends PureComponent {
               </FormItem>
             </Col>
           </Row>
+          {this.renderDataForm()}
         </Form>
       </Modal>
     );

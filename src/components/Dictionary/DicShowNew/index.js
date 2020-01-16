@@ -18,6 +18,7 @@ export default class DicShowNew extends Component {
 
   fetchName = () => {
     const { root, code } = this.props;
+    console.log(code)
     if (!code || code === '') {
       return;
     }

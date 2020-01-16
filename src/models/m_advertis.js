@@ -24,6 +24,7 @@ export default {
     PutinAdvertisList: [],
     NoPutinAdvertisList: [],
     putinAdvertisKeys: [],
+    formVisibleStock:false,
   },
   effects: {
     *queryelemList({ params, pagination }, { call, put, select }) {
@@ -195,6 +196,10 @@ export default {
     },
     saveAdverListPutNotIn(state, { payload }) {
       return { ...state, NoPutinAdvertisList: payload };
+    },
+
+    changeFormVisibleStock(state, { payload }) {
+      return { ...state, formVisibleStock: payload };
     },
   },
 };
